@@ -22,6 +22,7 @@ class CalenderTab(QWidget):
         hbox = QHBoxLayout()
 
         self.calendar = QCalendarWidget()
+        self.calendar.selectionChanged.connect(self.calendar_date)
 
         self.label = QLabel("Hello")
         self.label.setFont(QFont("Sanserif", 15))
@@ -31,6 +32,12 @@ class CalenderTab(QWidget):
         hbox.addWidget(self.label)
 
         self.setLayout(hbox)
+
+    def calendar_date(self):
+        dateselected = self.calendar.selectedDate()
+        date_in_string = str(dateselected.toPyDate())
+
+        self.label.setText("Date Is : " + date_in_string)
 
 
 class Window(QWidget):
