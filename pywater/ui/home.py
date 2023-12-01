@@ -15,14 +15,14 @@ class Home(QWidget):
         super().__init__(parent)
         grid = QGridLayout()
 
-        glass = Color("red")
+        anim = DrinkWaterAnim(self)
         words = Color("green")
         dt = Color("blue")
         fire = Color("yellow")
         vol = VolumeBox()
         bmi = Color("purple")
 
-        grid.addWidget(glass, 1, 0, 6, 3)
+        grid.addWidget(anim, 1, 0, 6, 3)
         grid.addWidget(words, 7, 0, 2, 6)
         grid.addWidget(dt, 1, 3, 2, 2)
         grid.addWidget(fire, 3, 3, 3, 2)
@@ -45,17 +45,15 @@ class Color(QWidget):
         self.setPalette(palette)
 
 
-class DrinkingWaterAnimation(QWidget):
-    def __init__(self):
-        super().__init__()
+class DrinkWaterAnim(QWidget):
+    def __init__(self, parent: Union[QWidget, None] = None):
+        super().__init__(parent)
 
         self.initUI()
         self.initAnimation()
 
     def initUI(self):
         self.setGeometry(100, 100, 400, 400)
-        self.setWindowTitle("Drinking Water Animation")
-        self.show()
 
     def initAnimation(self):
         self.timer = QTimer(self)
@@ -79,15 +77,14 @@ class DrinkingWaterAnimation(QWidget):
         painter.setPen(pen)
 
         brush = painter.brush()
-        # brush.setStyle(Qt.NoBrush)
+        brush.setStyle(Qt.NoBrush)
         painter.setBrush(brush)
 
-        painter.drawEllipse(150, 200, 100, 30)
-        painter.drawLine(150, 215, 100, 300)
-        painter.drawLine(250, 215, 300, 300)
+        painter.drawLine(100, 215, 100, 300)
         painter.drawLine(100, 300, 300, 300)
+        painter.drawLine(300, 300, 300, 215)
 
-    def drawWater(self, painter):
+    def drawWater(self, painter: QPainter):
         painter.setRenderHint(QPainter.Antialiasing)
         painter.setBrush(QColor(0, 119, 190))  # Adjust color as needed
 
@@ -104,7 +101,7 @@ class DrinkingWaterAnimation(QWidget):
         if self.waterLevel > 300:
             self.waterLevel = 0
 
-    def drawFace(self, painter):
+    def drawFace(self, painter: QPainter):
         # Draw a smiley face or an unhappy face based on water level
         if self.waterLevel > 200:  # Sufficient water, draw a smiley face
             painter.setRenderHint(QPainter.Antialiasing)
