@@ -2,13 +2,49 @@ from typing import Union
 
 from PyQt5 import QtCore
 from PyQt5.QtCore import QTimer, Qt
-from PyQt5.QtGui import QFont, QPainter, QColor, QBrush
-from PyQt5.QtWidgets import (
-    QWidget,
-    QVBoxLayout,
-    QDial,
-    QSizePolicy,
-)
+from PyQt5.QtGui import QFont, QPainter, QColor, QBrush, QPalette
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QDial, QSizePolicy, QGridLayout
+
+
+class Home(QWidget):
+    """
+    Home page of the application, planned to be a fancy dashboard or panel
+    """
+
+    def __init__(self, parent: Union[QWidget, None] = None):
+        super().__init__(parent)
+        grid = QGridLayout()
+
+        # self.vol = VolumeBox()
+        # layout.addWidget(self.vol)
+        red = Color("red")
+        green = Color("green")
+        blue = Color("blue")
+        yellow = Color("yellow")
+        pink = Color("pink")
+        purple = Color("purple")
+
+        grid.addWidget(red, 1, 0, 6, 3)
+        grid.addWidget(green, 7, 0, 2, 6)
+        grid.addWidget(blue, 1, 3, 2, 2)
+        grid.addWidget(yellow, 3, 3, 3, 2)
+        grid.addWidget(pink, 1, 5, 5, 1)
+        grid.addWidget(purple, 6, 3, 1, 3)
+
+        self.setLayout(grid)
+
+    def sliderMoved(self):
+        print("Dial value = %i" % (self.dial.value()))
+
+
+class Color(QWidget):
+    def __init__(self, color):
+        super(Color, self).__init__()
+        self.setAutoFillBackground(True)
+
+        palette = self.palette()
+        palette.setColor(QPalette.Window, QColor(color))
+        self.setPalette(palette)
 
 
 class DrinkingWaterAnimation(QWidget):
@@ -151,17 +187,3 @@ class VolumeBox(QWidget):
     def setBarPadding(self, i):
         self._bar._padding = int(i)
         self._bar.update()
-
-
-class Home(QWidget):
-    def __init__(self, parent: Union[QWidget, None] = None):
-        super().__init__(parent)
-        layout = QVBoxLayout()
-
-        self.vol = VolumeBox()
-        layout.addWidget(self.vol)
-
-        self.setLayout(layout)
-
-    def sliderMoved(self):
-        print("Dial value = %i" % (self.dial.value()))
