@@ -1,4 +1,6 @@
 import typing
+from apscheduler.schedulers.blocking import BlockingScheduler
+from PyQt5 import QtCore
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QIcon, QFont, QPainter, QColor, QPen
 from PyQt5.QtWidgets import (
@@ -14,6 +16,21 @@ from PyQt5.QtWidgets import (
 
 WINDOW_WIDTH = 500
 WINDOW_HEIGHT = 300
+
+
+class Home(QWidget):
+    def __init__(self):
+        super().__init__()
+
+
+class Analysis(QWidget):
+    def __init__(self):
+        super().__init__()
+
+
+class Settings(QWidget):
+    def __init__(self):
+        super().__init__()
 
 
 class DrinkingWaterAnimation(QWidget):
@@ -97,7 +114,7 @@ class DrinkingWaterAnimation(QWidget):
             painter.drawText(185, 250, "☹️")  # Unhappy face emoji
 
 
-class CalenderTab(QWidget):
+class History(QWidget):
     def __init__(self):
         super().__init__()
         hbox = QHBoxLayout()
@@ -131,15 +148,11 @@ class Window(QWidget):
         # self.setWindowIcon(QIcon('./assets/icon.png'))
         self.setGeometry(300, 300, WINDOW_WIDTH, WINDOW_HEIGHT)
 
-        tab1 = QWidget()
-        tab3 = QWidget()
-        tab4 = QWidget()
-
         tabs = QTabWidget()
-        tabs.addTab(tab1, "Tab1")
-        tabs.addTab(CalenderTab(), "History")
-        tabs.addTab(tab3, "Analysis")
-        tabs.addTab(tab4, "Settings")
+        tabs.addTab(Home(), "Home")
+        tabs.addTab(History(), "History")
+        tabs.addTab(Analysis(), "Analysis")
+        tabs.addTab(Settings(), "Settings")
 
         vbox = QVBoxLayout()
         vbox.addWidget(tabs)
@@ -171,12 +184,19 @@ def main():
     import sys
 
     qt = QApplication([])
-    # win = Window()
-    # win.show()
-    anim = DrinkingWaterAnimation()
+    win = Window()
+    win.show()
+    # anim = DrinkingWaterAnimation()
     # App(win)
     sys.exit(qt.exec_())
 
 
+def notify():
+    print("Go to drink water!")
+
+
 if __name__ == "__main__":
-    main()
+    # main()
+    sched = BlockingScheduler(timezone="Asia/Taipei")
+    sched.add_job(notify, "interval", seconds=2)
+    sched.start()
