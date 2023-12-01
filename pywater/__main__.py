@@ -2,7 +2,7 @@ import typing
 from apscheduler.schedulers.blocking import BlockingScheduler
 from PyQt5 import QtCore
 from PyQt5.QtCore import QTimer
-from PyQt5.QtGui import QIcon, QFont, QPainter, QColor, QPen
+from PyQt5.QtGui import QIcon, QFont, QPainter, QColor, QPen, QBrush
 from PyQt5.QtWidgets import (
     QApplication,
     QWidget,
@@ -13,25 +13,58 @@ from PyQt5.QtWidgets import (
     QHBoxLayout,
     QStatusBar,
     QCalendarWidget,
-    QGridLayout,
+    QVBoxLayout,
     QDial,
+    QSizePolicy,
 )
 
 WINDOW_WIDTH = 500
 WINDOW_HEIGHT = 300
 
 
+class _Bar(QWidget):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
+
+    def sizeHint(self):
+        return QtCore.QSize(40, 120)
+
+    def paintEvent(self, e):
+        painter = QPainter(self)
+        brush = QBrush()
+        brush.setColor(QColor("black"))
+        # brush.setStyle(Qt.SolidPattern)
+        rect = QtCore.QRect(0, 0, painter.device().width(), painter.device().height())
+        painter.fillRect(rect, brush)
+
+
+class VolumeBox(QWidget):
+    """
+    Custom Qt Widget to show a volume bar and dial.
+    Intended to be used for water drinking volume control.
+    """
+
+    def __init__(self, steps=5) -> None:
+        super(VolumeBox, self).__init__()
+        layout = QVBoxLayout()
+        self._bar = _Bar()
+        layout.addWidget(self._bar)
+
+        self._dial = QDial()
+        layout.addWidget(self._dial)
+
+        self.setLayout(layout)
+
+
 class Home(QWidget):
     def __init__(self):
         super().__init__()
-        layout = QGridLayout()
+        layout = QVBoxLayout()
         self.setLayout(layout)
-        self.dial = QDial()
-        self.dial.setMinimum(0)
-        self.dial.setMaximum(100)
-        self.dial.setValue(40)
-        self.dial.valueChanged.connect(self.sliderMoved)
-        layout.addWidget(self.dial)
+        self.vol = VolumeBox()
+        layout.addWidget(self.vol)
 
     def sliderMoved(self):
         print("Dial value = %i" % (self.dial.value()))
@@ -72,7 +105,7 @@ class DrinkingWaterAnimation(QWidget):
         self.drawWater(painter)
         self.drawFace(painter)
 
-    def drawGlass(self, painter):
+    def drawGlass(self, painter: QPainter):
         # Draw a simple glass cup
         painter.setRenderHint(QPainter.Antialiasing)
         pen = painter.pen()
