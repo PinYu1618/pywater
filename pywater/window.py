@@ -16,11 +16,15 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
     QDial,
     QSizePolicy,
+    QGridLayout,
+    QLineEdit,
+    QPlainTextEdit,
+    QFormLayout,
 )
 
 
-WINDOW_WIDTH = 500
-WINDOW_HEIGHT = 300
+WINDOW_WIDTH = 960
+WINDOW_HEIGHT = 600
 
 
 class _Bar(QWidget):
@@ -106,6 +110,18 @@ class Analysis(QWidget):
 class Settings(QWidget):
     def __init__(self, parent: Union[QWidget, None] = None):
         super().__init__(parent)
+        rbox = QFormLayout()
+        self.label = QLabel("Hello")
+        self.input1 = QLineEdit(self)
+        self.lbl2 = QLabel("Hello")
+        self.input2 = QLineEdit(self)
+        self.label3 = QLabel("CCC")
+        self.input3 = QPlainTextEdit(self)
+        rbox.addRow(self.label, self.input1)
+        rbox.addRow(self.lbl2, self.input2)
+        rbox.addRow(self.label3, self.input3)
+        rbox.setRowWrapPolicy(QFormLayout.WrapAllRows)
+        self.setLayout(rbox)
 
 
 class DrinkingWaterAnimation(QWidget):
@@ -192,20 +208,30 @@ class DrinkingWaterAnimation(QWidget):
 class History(QWidget):
     def __init__(self, parent: Union[QWidget, None] = None):
         super().__init__(parent)
-        hbox = QHBoxLayout()
+        hbox = QGridLayout()
 
+        lbox = QVBoxLayout()
         self.calendar = QCalendarWidget(self)
         self.calendar.setMouseTracking(True)
         self.calendar.selectionChanged.connect(self.calendar_date)
         self.calendar.setFixedSize(QSize(400, 300))
         self.calendar.setCursor(Qt.PointingHandCursor)
+        lbox.addWidget(self.calendar)
 
+        rbox = QFormLayout()
         self.label = QLabel("Hello")
-        self.label.setFont(QFont("Sanserif", 15))
-        self.label.setStyleSheet("color:red")
+        self.input1 = QLineEdit(self)
+        self.lbl2 = QLabel("Hello")
+        self.input2 = QLineEdit(self)
+        self.label3 = QLabel("CCC")
+        self.input3 = QPlainTextEdit(self)
+        rbox.addRow(self.label, self.input1)
+        rbox.addRow(self.lbl2, self.input2)
+        rbox.addRow(self.label3, self.input3)
+        rbox.setRowWrapPolicy(QFormLayout.WrapAllRows)
 
-        hbox.addWidget(self.calendar)
-        hbox.addWidget(self.label)
+        hbox.addLayout(lbox, 0, 0)
+        hbox.addLayout(rbox, 0, 1)
 
         self.setLayout(hbox)
 
@@ -224,14 +250,14 @@ class Window(QMainWindow):
         super().__init__()
         self.setWindowTitle("PyWater")
         # self.setWindowIcon(QIcon('./assets/icon.png'))
-        self.setGeometry(300, 300, WINDOW_WIDTH, WINDOW_HEIGHT)
+        self.setGeometry(150, 150, WINDOW_WIDTH, WINDOW_HEIGHT)
 
         # main contents
         self.tabs = QTabWidget()
         self.tabs.addTab(Home(self.tabs), "Home")
-        self.tabs.addTab(History(), "History")
-        self.tabs.addTab(Analysis(), "Analysis")
-        self.tabs.addTab(Settings(), "Settings")
+        self.tabs.addTab(History(self.tabs), "History")
+        self.tabs.addTab(Analysis(self.tabs), "Analysis")
+        self.tabs.addTab(Settings(self.tabs), "Settings")
         self.setCentralWidget(self.tabs)
 
         # status bar
