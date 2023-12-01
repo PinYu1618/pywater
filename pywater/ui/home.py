@@ -48,12 +48,7 @@ class Color(QWidget):
 class DrinkWaterAnim(QWidget):
     def __init__(self, parent: Union[QWidget, None] = None):
         super().__init__(parent)
-
-        self.initUI()
         self.initAnimation()
-
-    def initUI(self):
-        self.setGeometry(100, 100, 400, 400)
 
     def initAnimation(self):
         self.timer = QTimer(self)
@@ -71,18 +66,8 @@ class DrinkWaterAnim(QWidget):
     def drawGlass(self, painter: QPainter):
         # Draw a simple glass cup
         painter.setRenderHint(QPainter.Antialiasing)
-        pen = painter.pen()
-        pen.setColor(QColor(0, 0, 0))  # Black color
-        pen.setWidth(2)
-        painter.setPen(pen)
-
-        brush = painter.brush()
-        brush.setStyle(Qt.NoBrush)
-        painter.setBrush(brush)
-
-        painter.drawLine(100, 215, 100, 300)
-        painter.drawLine(100, 300, 300, 300)
-        painter.drawLine(300, 300, 300, 215)
+        painter.setBrush(QColor(250, 250, 250))
+        painter.drawRect(160, 300, 150, 400)
 
     def drawWater(self, painter: QPainter):
         painter.setRenderHint(QPainter.Antialiasing)
