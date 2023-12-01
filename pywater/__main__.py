@@ -8,9 +8,11 @@ from PyQt5.QtWidgets import (
     QWidget,
     QPushButton,
     QLabel,
+    QMainWindow,
     QTabWidget,
     QVBoxLayout,
     QHBoxLayout,
+    QStatusBar,
     QCalendarWidget,
 )
 
@@ -141,26 +143,25 @@ class History(QWidget):
         self.label.setText("Date Is : " + date_in_string)
 
 
-class Window(QWidget):
+class Window(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("PyWater")
         # self.setWindowIcon(QIcon('./assets/icon.png'))
         self.setGeometry(300, 300, WINDOW_WIDTH, WINDOW_HEIGHT)
 
+        # main contents
         tabs = QTabWidget()
         tabs.addTab(Home(), "Home")
         tabs.addTab(History(), "History")
         tabs.addTab(Analysis(), "Analysis")
         tabs.addTab(Settings(), "Settings")
+        self.setCentralWidget(tabs)
 
-        vbox = QVBoxLayout()
-        vbox.addWidget(tabs)
-
-        self.setLayout(vbox)
-
-        # self.btn = QPushButton("+100ml")
-        # self.setCentralWidget(self.btn)
+        # status bar
+        self.status_bar = QStatusBar()
+        self.setStatusBar(self.status_bar)
+        self.status_bar.showMessage("PyWater v1.0")
 
     def onclick(self):
         print("Clicked!")
@@ -195,8 +196,11 @@ def notify():
     print("Go to drink water!")
 
 
-if __name__ == "__main__":
-    # main()
+def notifier():
     sched = BlockingScheduler(timezone="Asia/Taipei")
     sched.add_job(notify, "interval", seconds=2)
     sched.start()
+
+
+if __name__ == "__main__":
+    main()
