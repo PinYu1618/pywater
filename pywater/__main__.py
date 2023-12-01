@@ -10,10 +10,11 @@ from PyQt5.QtWidgets import (
     QLabel,
     QMainWindow,
     QTabWidget,
-    QVBoxLayout,
     QHBoxLayout,
     QStatusBar,
     QCalendarWidget,
+    QGridLayout,
+    QDial,
 )
 
 WINDOW_WIDTH = 500
@@ -23,6 +24,17 @@ WINDOW_HEIGHT = 300
 class Home(QWidget):
     def __init__(self):
         super().__init__()
+        layout = QGridLayout()
+        self.setLayout(layout)
+        self.dial = QDial()
+        self.dial.setMinimum(0)
+        self.dial.setMaximum(100)
+        self.dial.setValue(40)
+        self.dial.valueChanged.connect(self.sliderMoved)
+        layout.addWidget(self.dial)
+
+    def sliderMoved(self):
+        print("Dial value = %i" % (self.dial.value()))
 
 
 class Analysis(QWidget):
