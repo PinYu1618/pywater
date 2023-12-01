@@ -1,7 +1,7 @@
 import typing
 from apscheduler.schedulers.blocking import BlockingScheduler
 from PyQt5 import QtCore
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtGui import QIcon, QFont, QPainter, QColor, QPen, QBrush
 from PyQt5.QtWidgets import (
     QApplication,
@@ -35,9 +35,29 @@ class _Bar(QWidget):
         painter = QPainter(self)
         brush = QBrush()
         brush.setColor(QColor("black"))
-        # brush.setStyle(Qt.SolidPattern)
+        brush.setStyle(Qt.SolidPattern)
         rect = QtCore.QRect(0, 0, painter.device().width(), painter.device().height())
         painter.fillRect(rect, brush)
+
+        # Get current state.
+        dial = self.parent()._dial
+        vmin, vmax = dial.minimum(), dial.maximum()
+        value = dial.value()
+
+        pen = painter.pen()
+        pen.setColor(QColor("red"))
+        painter.setPen(pen)
+
+        font = painter.font()
+        font.setFamily("Times")
+        font.setPointSize(18)
+        painter.setFont(font)
+
+        painter.drawText(25, 25, "{}-->{}<--{}".format(vmin, value, vmax))
+        painter.end()
+
+    def _trigger_refresh(self):
+        self.update()
 
 
 class VolumeBox(QWidget):
@@ -53,18 +73,25 @@ class VolumeBox(QWidget):
         layout.addWidget(self._bar)
 
         self._dial = QDial()
+        self._dial.valueChanged.connect(self._bar._trigger_refresh)
         layout.addWidget(self._dial)
 
         self.setLayout(layout)
+
+    def setBarPadding(self, i):
+        self._bar._padding = int(i)
+        self._bar.update()
 
 
 class Home(QWidget):
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout()
-        self.setLayout(layout)
+
         self.vol = VolumeBox()
         layout.addWidget(self.vol)
+
+        self.setLayout(layout)
 
     def sliderMoved(self):
         print("Dial value = %i" % (self.dial.value()))
