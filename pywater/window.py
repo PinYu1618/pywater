@@ -1,7 +1,8 @@
-import typing
+from typing import Union
+
 from apscheduler.schedulers.blocking import BlockingScheduler
 from PyQt5 import QtCore
-from PyQt5.QtCore import QTimer, Qt
+from PyQt5.QtCore import QTimer, Qt, QSize
 from PyQt5.QtGui import QIcon, QFont, QPainter, QColor, QPen, QBrush
 from PyQt5.QtWidgets import (
     QWidget,
@@ -84,8 +85,8 @@ class VolumeBox(QWidget):
 
 
 class Home(QWidget):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent: Union[QWidget, None] = None):
+        super().__init__(parent)
         layout = QVBoxLayout()
 
         self.vol = VolumeBox()
@@ -98,13 +99,13 @@ class Home(QWidget):
 
 
 class Analysis(QWidget):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent: Union[QWidget, None] = None):
+        super().__init__(parent)
 
 
 class Settings(QWidget):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent: Union[QWidget, None] = None):
+        super().__init__(parent)
 
 
 class DrinkingWaterAnimation(QWidget):
@@ -189,12 +190,15 @@ class DrinkingWaterAnimation(QWidget):
 
 
 class History(QWidget):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent: Union[QWidget, None] = None):
+        super().__init__(parent)
         hbox = QHBoxLayout()
 
-        self.calendar = QCalendarWidget()
+        self.calendar = QCalendarWidget(self)
+        self.calendar.setMouseTracking(True)
         self.calendar.selectionChanged.connect(self.calendar_date)
+        self.calendar.setFixedSize(QSize(400, 300))
+        self.calendar.setCursor(Qt.PointingHandCursor)
 
         self.label = QLabel("Hello")
         self.label.setFont(QFont("Sanserif", 15))
@@ -223,12 +227,12 @@ class Window(QMainWindow):
         self.setGeometry(300, 300, WINDOW_WIDTH, WINDOW_HEIGHT)
 
         # main contents
-        tabs = QTabWidget()
-        tabs.addTab(Home(), "Home")
-        tabs.addTab(History(), "History")
-        tabs.addTab(Analysis(), "Analysis")
-        tabs.addTab(Settings(), "Settings")
-        self.setCentralWidget(tabs)
+        self.tabs = QTabWidget()
+        self.tabs.addTab(Home(self.tabs), "Home")
+        self.tabs.addTab(History(), "History")
+        self.tabs.addTab(Analysis(), "Analysis")
+        self.tabs.addTab(Settings(), "Settings")
+        self.setCentralWidget(self.tabs)
 
         # status bar
         self.status_bar = QStatusBar()
