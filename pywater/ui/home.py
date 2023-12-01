@@ -3,7 +3,7 @@ from typing import Union
 from PyQt5 import QtCore
 from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtGui import QFont, QPainter, QColor, QBrush, QPalette
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QDial, QSizePolicy, QGridLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QDial, QGridLayout
 
 
 class Home(QWidget):
@@ -15,21 +15,19 @@ class Home(QWidget):
         super().__init__(parent)
         grid = QGridLayout()
 
-        # self.vol = VolumeBox()
-        # layout.addWidget(self.vol)
-        red = Color("red")
-        green = Color("green")
-        blue = Color("blue")
-        yellow = Color("yellow")
-        pink = Color("pink")
-        purple = Color("purple")
+        glass = Color("red")
+        words = Color("green")
+        dt = Color("blue")
+        fire = Color("yellow")
+        vol = VolumeBox()
+        bmi = Color("purple")
 
-        grid.addWidget(red, 1, 0, 6, 3)
-        grid.addWidget(green, 7, 0, 2, 6)
-        grid.addWidget(blue, 1, 3, 2, 2)
-        grid.addWidget(yellow, 3, 3, 3, 2)
-        grid.addWidget(pink, 1, 5, 5, 1)
-        grid.addWidget(purple, 6, 3, 1, 3)
+        grid.addWidget(glass, 1, 0, 6, 3)
+        grid.addWidget(words, 7, 0, 2, 6)
+        grid.addWidget(dt, 1, 3, 2, 2)
+        grid.addWidget(fire, 3, 3, 3, 2)
+        grid.addWidget(vol, 1, 5, 5, 1)
+        grid.addWidget(bmi, 6, 3, 1, 3)
 
         self.setLayout(grid)
 
@@ -131,8 +129,6 @@ class DrinkingWaterAnimation(QWidget):
 class _Bar(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        self.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
 
     def sizeHint(self):
         return QtCore.QSize(40, 120)
