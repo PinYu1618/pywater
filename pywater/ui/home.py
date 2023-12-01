@@ -1,25 +1,13 @@
 from typing import Union
 
-from apscheduler.schedulers.blocking import BlockingScheduler
 from PyQt5 import QtCore
-from PyQt5.QtCore import QTimer, Qt, QSize
-from PyQt5.QtGui import QIcon, QFont, QPainter, QColor, QPen, QBrush
+from PyQt5.QtCore import QTimer, Qt
+from PyQt5.QtGui import QFont, QPainter, QColor, QBrush
 from PyQt5.QtWidgets import (
     QWidget,
-    QPushButton,
-    QLabel,
-    QMainWindow,
-    QTabWidget,
-    QHBoxLayout,
-    QStatusBar,
-    QCalendarWidget,
     QVBoxLayout,
     QDial,
     QSizePolicy,
-    QGridLayout,
-    QLineEdit,
-    QPlainTextEdit,
-    QFormLayout,
 )
 
 
