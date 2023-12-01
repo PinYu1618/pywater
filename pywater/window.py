@@ -4,7 +4,6 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtGui import QIcon, QFont, QPainter, QColor, QPen, QBrush
 from PyQt5.QtWidgets import (
-    QApplication,
     QWidget,
     QPushButton,
     QLabel,
@@ -17,6 +16,7 @@ from PyQt5.QtWidgets import (
     QDial,
     QSizePolicy,
 )
+
 
 WINDOW_WIDTH = 500
 WINDOW_HEIGHT = 300
@@ -237,42 +237,3 @@ class Window(QMainWindow):
 
     def onclick(self):
         print("Clicked!")
-
-
-class App:
-    def __init__(self, window: Window):
-        self.win = window
-        self.count = 0
-        self.connect_signals()
-
-    def connect_signals(self):
-        self.win.btn.clicked.connect(self.win.onclick)
-
-    def inc(self):
-        self.count += 1
-        self.win.onclick()
-
-
-def main():
-    import sys
-
-    qt = QApplication([])
-    win = Window()
-    win.show()
-    # anim = DrinkingWaterAnimation()
-    # App(win)
-    sys.exit(qt.exec_())
-
-
-def notify():
-    print("Go to drink water!")
-
-
-def notifier():
-    sched = BlockingScheduler(timezone="Asia/Taipei")
-    sched.add_job(notify, "interval", seconds=2)
-    sched.start()
-
-
-if __name__ == "__main__":
-    main()
