@@ -1,6 +1,6 @@
 import typing
-from PyQt5 import QtCore
-from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtCore import QTimer
+from PyQt5.QtGui import QIcon, QFont, QPainter, QColor, QPen
 from PyQt5.QtWidgets import (
     QApplication,
     QWidget,
@@ -16,28 +16,55 @@ WINDOW_WIDTH = 500
 WINDOW_HEIGHT = 300
 
 
-class CalenderTab(QWidget):
+class DrinkingWaterAnimation(QWidget):
     def __init__(self):
         super().__init__()
-        hbox = QHBoxLayout()
 
-        self.calendar = QCalendarWidget()
-        self.calendar.selectionChanged.connect(self.calendar_date)
+        self.initUI()
+        self.initAnimation()
 
-        self.label = QLabel("Hello")
-        self.label.setFont(QFont("Sanserif", 15))
-        self.label.setStyleSheet("color:red")
+    def initUI(self):
+        self.setGeometry(100, 100, 400, 400)
+        self.setWindowTitle("Drinking Water Animation")
+        self.show()
 
-        hbox.addWidget(self.calendar)
-        hbox.addWidget(self.label)
+    def initAnimation(self):
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update)
+        self.timer.start(100)  # Adjust the speed of animation by changing the interval
 
-        self.setLayout(hbox)
+        self.waterLevel = 0
 
-    def calendar_date(self):
-        dateselected = self.calendar.selectedDate()
-        date_in_string = str(dateselected.toPyDate())
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        self.drawGlass(painter)
+        self.drawWater(painter)
 
-        self.label.setText("Date Is : " + date_in_string)
+    def drawGlass(self, painter):
+        # Draw a simple glass cup
+        pen = QPen(QColor(0, 0, 0))
+        pen.setWidth(2)
+        painter.setPen(pen)
+
+        # painter.setBrush(Qt.NoBrush)
+        painter.drawEllipse(150, 200, 100, 30)
+        painter.drawLine(150, 215, 100, 300)
+        painter.drawLine(250, 215, 300, 300)
+        painter.drawLine(100, 300, 300, 300)
+
+    def drawWater(self, painter):
+        painter.setRenderHint(QPainter.Antialiasing)
+        painter.setBrush(QColor(0, 119, 190))  # Adjust color as needed
+
+        # Calculate the water level within the glass
+        waterHeight = 300 - self.waterLevel
+        if waterHeight > 0:
+            painter.drawRect(160, 300 - self.waterLevel, 80, self.waterLevel)
+
+        # Increase the water level
+        self.waterLevel += 5
+        if self.waterLevel > 300:
+            self.waterLevel = 0
 
 
 class Window(QWidget):
@@ -48,10 +75,14 @@ class Window(QWidget):
         self.setGeometry(300, 300, WINDOW_WIDTH, WINDOW_HEIGHT)
 
         tab1 = QWidget()
+        tab3 = QWidget()
+        tab4 = QWidget()
 
         tabs = QTabWidget()
         tabs.addTab(tab1, "Tab1")
         tabs.addTab(CalenderTab(), "History")
+        tabs.addTab(tab3, "Analysis")
+        tabs.addTab(tab4, "Settings")
 
         vbox = QVBoxLayout()
         vbox.addWidget(tabs)
@@ -83,8 +114,9 @@ def main():
     import sys
 
     qt = QApplication([])
-    win = Window()
-    win.show()
+    # win = Window()
+    # win.show()
+    anim = DrinkingWaterAnimation()
     # App(win)
     sys.exit(qt.exec_())
 
