@@ -22,12 +22,12 @@ class Home(QWidget):
         vol = VolumeBox()
         bmi = Color("purple")
 
-        grid.addWidget(anim, 1, 0, 6, 3)
-        grid.addWidget(words, 7, 0, 2, 6)
+        grid.addWidget(anim, 1, 0, 7, 3)
+        grid.addWidget(words, 8, 0, 1, 6)
         grid.addWidget(dt, 1, 3, 2, 2)
-        grid.addWidget(fire, 3, 3, 3, 2)
-        grid.addWidget(vol, 1, 5, 5, 1)
-        grid.addWidget(bmi, 6, 3, 1, 3)
+        grid.addWidget(fire, 3, 3, 4, 2)
+        grid.addWidget(vol, 1, 5, 6, 1)
+        grid.addWidget(bmi, 7, 3, 1, 3)
 
         self.setLayout(grid)
 
@@ -48,20 +48,18 @@ class Color(QWidget):
 class DrinkWaterAnim(QWidget):
     def __init__(self, parent: Union[QWidget, None] = None):
         super().__init__(parent)
-        self.initAnimation()
+        self.waterLevel = 0
+        # self.initAnimation()
 
     def initAnimation(self):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update)
         self.timer.start(100)  # Adjust the speed of animation by changing the interval
 
-        self.waterLevel = 0
-
     def paintEvent(self, event):
         painter = QPainter(self)
         self.drawGlass(painter)
         self.drawWater(painter)
-        self.drawFace(painter)
 
     def drawGlass(self, painter: QPainter):
         # Draw a simple glass cup
@@ -78,34 +76,16 @@ class DrinkWaterAnim(QWidget):
         if waterHeight > 0:
             painter.drawRect(160, 300 - self.waterLevel, 80, self.waterLevel)
 
-        # Draw a face based on water level
-        self.drawFace(painter)
-
         # Increase the water level
         self.waterLevel += 5
         if self.waterLevel > 300:
             self.waterLevel = 0
 
-    def drawFace(self, painter: QPainter):
-        # Draw a smiley face or an unhappy face based on water level
-        if self.waterLevel > 200:  # Sufficient water, draw a smiley face
-            painter.setRenderHint(QPainter.Antialiasing)
-            pen = painter.pen()
-            pen.setColor(QColor(0, 0, 0))  # Black color
-            painter.setPen(pen)
+    def drawSmile(self, painter: QPainter):
+        pass
 
-            font = QFont("Arial", 16, QFont.Bold)
-            painter.setFont(font)
-            painter.drawText(185, 250, "😊")  # Smiley face emoji
-        else:  # Low water level, draw an unhappy face
-            painter.setRenderHint(QPainter.Antialiasing)
-            pen = painter.pen()
-            pen.setColor(QColor(0, 0, 0))  # Black color
-            painter.setPen(pen)
-
-            font = QFont("Arial", 16, QFont.Bold)
-            painter.setFont(font)
-            painter.drawText(185, 250, "☹️")  # Unhappy face emoji
+    def drawUnhappy(self, painter: QPainter):
+        pass
 
 
 class _Bar(QWidget):
