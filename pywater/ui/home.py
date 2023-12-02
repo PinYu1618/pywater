@@ -117,7 +117,6 @@ class _Bar(QWidget):
         brush = QBrush()
         brush.setColor(QColor("black"))
         brush.setStyle(Qt.SolidPattern)
-        # FIXME: sizing
         rect = QtCore.QRect(0, 0, self.width(), self.height())
         painter.fillRect(rect, brush)
 
@@ -129,11 +128,6 @@ class _Bar(QWidget):
         pen = painter.pen()
         pen.setColor(QColor("red"))
         painter.setPen(pen)
-
-        font = painter.font()
-        font.setFamily("Times")
-        font.setPointSize(18)
-        painter.setFont(font)
 
         pc = (value - vmin) / (vmax - vmin)
         n_steps_to_draw = int(pc * 5)
