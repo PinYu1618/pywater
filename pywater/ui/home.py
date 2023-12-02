@@ -15,7 +15,9 @@ class Home(QWidget):
         super().__init__(parent)
         grid = QGridLayout()
 
-        anim = DrinkWaterAnim(self)
+        anim = DrinkWaterAnim()
+        anim.setMouseTracking(True)
+        anim.setCursor(Qt.PointingHandCursor)
         words = Color("green")
         dt = Color("blue")
         fire = Color("yellow")

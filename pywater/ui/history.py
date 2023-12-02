@@ -16,7 +16,7 @@ from PyQt5.QtWidgets import (
 class History(QWidget):
     def __init__(self, parent: Union[QWidget, None] = None):
         super().__init__(parent)
-        grid = QGridLayout()
+        grid = QGridLayout(self)
 
         lbox = QVBoxLayout()
         self.calendar = QCalendarWidget(self)
@@ -27,15 +27,16 @@ class History(QWidget):
         lbox.addWidget(self.calendar)
 
         rbox = QFormLayout()
-        self.label = QLabel("Water")
-        self.input1 = QLineEdit(self)
-        self.lbl2 = QLabel("Weight")
+        lbl_water = QLabel("Water (ml)")
+        self.e_water = QLineEdit(self)
+        self.e_water.setReadOnly(True)
+        lbl_weight = QLabel("Weight (kg)")
         self.input2 = QLineEdit(self)
-        self.label3 = QLabel("Memo")
+        lbl_memo = QLabel("Memo")
         self.input3 = QPlainTextEdit(self)
-        rbox.addRow(self.label, self.input1)
-        rbox.addRow(self.lbl2, self.input2)
-        rbox.addRow(self.label3, self.input3)
+        rbox.addRow(lbl_water, self.e_water)
+        rbox.addRow(lbl_weight, self.input2)
+        rbox.addRow(lbl_memo, self.input3)
         rbox.setRowWrapPolicy(QFormLayout.WrapAllRows)
 
         grid.addLayout(lbox, 0, 0)
