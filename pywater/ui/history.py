@@ -8,9 +8,6 @@ from PyQt5.QtWidgets import (
     QCalendarWidget,
     QVBoxLayout,
     QGridLayout,
-    QLineEdit,
-    QPlainTextEdit,
-    QFormLayout,
     QTableView,
 )
 

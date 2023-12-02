@@ -2,8 +2,8 @@ from typing import Union
 
 from PyQt5 import QtCore
 from PyQt5.QtCore import QTimer, Qt
-from PyQt5.QtGui import QFont, QPainter, QColor, QBrush, QPalette
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QDial, QGridLayout
+from PyQt5.QtGui import QPainter, QColor, QBrush, QPalette
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QDial, QGridLayout, QLabel
 
 
 class Home(QWidget):
@@ -13,28 +13,44 @@ class Home(QWidget):
 
     def __init__(self, parent: Union[QWidget, None] = None):
         super().__init__(parent)
-        grid = QGridLayout()
+        self._grid = QGridLayout()
+        self.setLayout(self._grid)
+        self.addBottle()
+        self.addFire()
+        self.addRecord()
+        self.addVolCtrl()
+        self.addBMI()
+        self.addWords()
 
-        anim = DrinkWaterAnim()
+    def addBottle(self):
+        anim = DrinkWaterAnim(self)
         anim.setMouseTracking(True)
         anim.setCursor(Qt.PointingHandCursor)
-        words = Color("green")
-        dt = Color("blue")
-        fire = Color("yellow")
-        vol = VolumeBox()
-        bmi = Color("purple")
+        self._grid.addWidget(anim, 1, 0, 7, 3)
 
-        grid.addWidget(anim, 1, 0, 7, 3)
-        grid.addWidget(words, 8, 0, 1, 6)
-        grid.addWidget(dt, 1, 3, 2, 2)
-        grid.addWidget(fire, 3, 3, 4, 2)
-        grid.addWidget(vol, 1, 5, 6, 1)
-        grid.addWidget(bmi, 7, 3, 1, 3)
+    def addFire(self):
+        fire = QLabel("(fire icon) 30 days")
+        fire.setStyleSheet("border: 2px solid black;")
+        self._grid.addWidget(fire, 1, 3, 2, 2)
 
-        self.setLayout(grid)
+    def addRecord(self):
+        record = QLabel()
+        record.setStyleSheet("border: 2px solid black;")
+        self._grid.addWidget(record, 3, 3, 4, 2)
 
-    def sliderMoved(self):
-        print("Dial value = %i" % (self.dial.value()))
+    def addVolCtrl(self):
+        vol = VolumeBox(self)
+        self._grid.addWidget(vol, 1, 5, 6, 1)
+
+    def addBMI(self):
+        bmi = QLabel("BMI: ???")
+        bmi.setStyleSheet("border: 2px solid black;")
+        self._grid.addWidget(bmi, 7, 3, 1, 3)
+
+    def addWords(self):
+        words = QLabel("Hello world.")
+        words.setStyleSheet("border: 2px solid black;")
+        self._grid.addWidget(words, 8, 0, 1, 6)
 
 
 class Color(QWidget):
@@ -132,8 +148,8 @@ class VolumeBox(QWidget):
     Intended to be used for water drinking volume control.
     """
 
-    def __init__(self, steps=5) -> None:
-        super(VolumeBox, self).__init__()
+    def __init__(self, parent=None, steps=5) -> None:
+        super(VolumeBox, self).__init__(parent)
         layout = QVBoxLayout()
         self._bar = _Bar()
         layout.addWidget(self._bar)

@@ -19,7 +19,7 @@ class Window(QMainWindow):
         # self.setFixedSize(QSize(WINDOW_WIDTH, WINDOW_HEIGHT))
 
         # main contents
-        self.tabs = QTabWidget()
+        self.tabs = QTabWidget(self)
         self.tabs.addTab(Home(self.tabs), "Home")
         self.tabs.addTab(History(self.tabs), "History")
         self.tabs.addTab(Analysis(self.tabs), "Analysis")
