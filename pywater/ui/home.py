@@ -65,7 +65,7 @@ class DrinkWaterAnim(QWidget):
         # Draw a simple glass cup
         painter.setRenderHint(QPainter.Antialiasing)
         painter.setBrush(QColor(250, 250, 250))
-        painter.drawRect(160, 300, 150, 400)
+        painter.drawRect(180, 70, 170, 400)
 
     def drawWater(self, painter: QPainter):
         painter.setRenderHint(QPainter.Antialiasing)

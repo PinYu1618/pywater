@@ -1,4 +1,7 @@
-from apscheduler.schedulers.blocking import BlockingScheduler
+import time
+from plyer import notification
+from apscheduler.schedulers.background import BackgroundScheduler
+from PyQt5.QtWidgets import QApplication
 
 from .window import Window
 
@@ -9,10 +12,23 @@ class App:
 
 
 def notify():
-    print("Go to drink water!")
+    notification.notify(
+        title="Hello", message="world.", app_icon=None, timeout=3, toast=False
+    )
 
 
-def notifier():
-    sched = BlockingScheduler(timezone="Asia/Taipei")
-    sched.add_job(notify, "interval", seconds=2)
+# FIXME
+def run():
+    import sys
+
+    # setup notification background scheduler
+    sched = BackgroundScheduler(timezone="Asia/Taipei")
+    sched.add_job(notify, "interval", seconds=5)
     sched.start()
+    print("Schedule started...")
+
+    # show app window
+    qt = QApplication([])
+    win = Window()
+    App(win)
+    sys.exit(qt.exec_())

@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QApplication
 
+from pywater import app
 from pywater.app import App
 from pywater.window import Window
 
@@ -15,4 +16,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    app.run()
