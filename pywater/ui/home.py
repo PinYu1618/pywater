@@ -118,7 +118,7 @@ class _Bar(QWidget):
         brush.setColor(QColor("black"))
         brush.setStyle(Qt.SolidPattern)
         # FIXME: sizing
-        rect = QtCore.QRect(0, 0, painter.device().width(), painter.device().height())
+        rect = QtCore.QRect(0, 0, self.width(), self.height())
         painter.fillRect(rect, brush)
 
         # Get current state.
@@ -144,9 +144,9 @@ class _Bar(QWidget):
         d_width = self.width() - (padding * 2)
 
         # Draw the bars.
-        step_size = d_height / 5
+        step_size = d_height / 5.0
         bar_height = step_size * 0.6
-        bar_spacer = step_size * 0.4 / 2
+        bar_spacer = step_size * 0.4 / 2.0
 
         brush.setColor(QColor("red"))
 
@@ -157,7 +157,7 @@ class _Bar(QWidget):
                 d_width,
                 bar_height,
             )
-        painter.fillRect(rect, brush)
+            painter.fillRect(rect, brush)
 
         painter.end()
 
