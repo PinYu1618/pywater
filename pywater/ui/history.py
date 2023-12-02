@@ -1,5 +1,6 @@
 from typing import Union
 
+from PyQt5.QtSql import QSqlTableModel
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtWidgets import (
     QWidget,
@@ -10,6 +11,7 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QPlainTextEdit,
     QFormLayout,
+    QTableView,
 )
 
 
@@ -26,18 +28,24 @@ class History(QWidget):
         self.calendar.setCursor(Qt.PointingHandCursor)
         lbox.addWidget(self.calendar)
 
-        rbox = QFormLayout()
-        lbl_water = QLabel("Water (ml)")
-        self.e_water = QLineEdit(self)
-        self.e_water.setReadOnly(True)
-        lbl_weight = QLabel("Weight (kg)")
-        self.input2 = QLineEdit(self)
-        lbl_memo = QLabel("Memo")
-        self.input3 = QPlainTextEdit(self)
-        rbox.addRow(lbl_water, self.e_water)
-        rbox.addRow(lbl_weight, self.input2)
-        rbox.addRow(lbl_memo, self.input3)
-        rbox.setRowWrapPolicy(QFormLayout.WrapAllRows)
+        # model
+        self.model = QSqlTableModel(self)
+        self.model.setTable("records")
+        self.model.setEditStrategy(QSqlTableModel.OnFieldChange)
+        self.model.setHeaderData(0, Qt.Horizontal, "ID")
+        self.model.setHeaderData(1, Qt.Horizontal, "Date")
+        self.model.setHeaderData(2, Qt.Horizontal, "Water")
+        self.model.setHeaderData(3, Qt.Horizontal, "Weight")
+        self.model.select()
+
+        # view
+        rbox = QVBoxLayout()
+        self.lbl = QLabel("Unknown Date")
+        self.lst = QTableView()
+        self.lst.setModel(self.model)
+        self.lst.resizeColumnsToContents()
+        rbox.addWidget(self.lbl)
+        rbox.addWidget(self.lst)
 
         grid.addLayout(lbox, 0, 0)
         grid.addLayout(rbox, 0, 1)
@@ -51,4 +59,4 @@ class History(QWidget):
         dateselected = self.calendar.selectedDate()
         date_in_string = str(dateselected.toPyDate())
 
-        self.label.setText("Date Is : " + date_in_string)
+        self.lbl.setText("Date Is : " + date_in_string)
