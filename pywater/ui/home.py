@@ -24,6 +24,7 @@ class Home(QWidget):
 
     def addBottle(self):
         anim = DrinkWaterAnim(self)
+        anim.setStyleSheet("border: 2px solid black;")
         anim.setMouseTracking(True)
         anim.setCursor(Qt.PointingHandCursor)
         self._grid.addWidget(anim, 1, 0, 7, 3)
@@ -53,21 +54,10 @@ class Home(QWidget):
         self._grid.addWidget(words, 8, 0, 1, 6)
 
 
-class Color(QWidget):
-    def __init__(self, color):
-        super(Color, self).__init__()
-        self.setAutoFillBackground(True)
-
-        palette = self.palette()
-        palette.setColor(QPalette.Window, QColor(color))
-        self.setPalette(palette)
-
-
 class DrinkWaterAnim(QFrame):
     def __init__(self, parent: Union[QWidget, None] = None):
         super().__init__(parent)
-        self.setStyleSheet("border: 2px solid black;")
-        self.waterLevel = 0
+        self.waterLevel = 100
         # self.initAnimation()
 
     def initAnimation(self):
@@ -83,8 +73,8 @@ class DrinkWaterAnim(QFrame):
     def drawGlass(self, painter: QPainter):
         # Draw a simple glass cup
         painter.setRenderHint(QPainter.Antialiasing)
-        painter.setBrush(QColor(250, 250, 250))
-        painter.drawRect(180, 70, 170, 400)
+        painter.setBrush(QColor(240, 240, 240))
+        painter.drawRect(180, 170, 170, 300)
 
     def drawWater(self, painter: QPainter):
         painter.setRenderHint(QPainter.Antialiasing)
@@ -93,12 +83,7 @@ class DrinkWaterAnim(QFrame):
         # Calculate the water level within the glass
         waterHeight = 300 - self.waterLevel
         if waterHeight > 0:
-            painter.drawRect(160, 300 - self.waterLevel, 80, self.waterLevel)
-
-        # Increase the water level
-        self.waterLevel += 5
-        if self.waterLevel > 300:
-            self.waterLevel = 0
+            painter.drawRect(180, 170 + 300 - self.waterLevel, 170, self.waterLevel)
 
     def drawSmile(self, painter: QPainter):
         pass
@@ -107,9 +92,38 @@ class DrinkWaterAnim(QFrame):
         pass
 
 
+class VolumeCtrl(QFrame):
+    """
+    Custom Qt Widget to show a volume bar and dial.
+    Intended to be used for water drinking volume control.
+    """
+
+    def __init__(self, parent=None, steps=5) -> None:
+        super(VolumeCtrl, self).__init__(parent)
+        self.setStyleSheet("border: 2px solid black;")
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+
+        # setup vbar
+        self._bar = _Bar(self)
+        layout.addWidget(self._bar)
+
+        # setup dial
+        self._dial = QDial(self)
+        self._dial.setFixedSize(QSize(150, 150))
+        self._dial.setMouseTracking(True)
+        self._dial.setCursor(Qt.PointingHandCursor)
+        self._dial.valueChanged.connect(self._bar._trigger_refresh)
+        layout.addWidget(self._dial)
+
+    def setBarPadding(self, i):
+        self._bar._padding = int(i)
+        self._bar.update()
+
+
 class _Bar(QWidget):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, parent):
+        super().__init__(parent)
         self.setFixedHeight(200)
 
     def paintEvent(self, e):
@@ -157,32 +171,3 @@ class _Bar(QWidget):
 
     def _trigger_refresh(self):
         self.update()
-
-
-class VolumeCtrl(QFrame):
-    """
-    Custom Qt Widget to show a volume bar and dial.
-    Intended to be used for water drinking volume control.
-    """
-
-    def __init__(self, parent=None, steps=5) -> None:
-        super(VolumeCtrl, self).__init__(parent)
-        self.setStyleSheet("border: 2px solid black;")
-        layout = QVBoxLayout()
-        self.setLayout(layout)
-
-        # setup vbar
-        self._bar = _Bar()
-        layout.addWidget(self._bar)
-
-        # setup dial
-        self._dial = QDial()
-        self._dial.setFixedSize(QSize(150, 150))
-        self._dial.setMouseTracking(True)
-        self._dial.setCursor(Qt.PointingHandCursor)
-        self._dial.valueChanged.connect(self._bar._trigger_refresh)
-        layout.addWidget(self._dial)
-
-    def setBarPadding(self, i):
-        self._bar._padding = int(i)
-        self._bar.update()
