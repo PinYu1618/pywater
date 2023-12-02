@@ -16,7 +16,7 @@ class Window(QMainWindow):
         self.setWindowTitle("PyWater")
         # self.setWindowIcon(QIcon('./assets/icon.png'))
         self.setGeometry(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-        # self.setFixedSize(QSize(WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.setFixedSize(QSize(WINDOW_WIDTH, WINDOW_HEIGHT))
 
         # main contents
         self.tabs = QTabWidget(self)

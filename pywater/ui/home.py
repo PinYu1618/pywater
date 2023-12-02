@@ -1,7 +1,7 @@
 from typing import Union
 
 from PyQt5 import QtCore
-from PyQt5.QtCore import QTimer, Qt
+from PyQt5.QtCore import QTimer, Qt, QSize
 from PyQt5.QtGui import QPainter, QColor, QBrush, QPalette
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QDial, QGridLayout, QLabel, QFrame
 
@@ -39,7 +39,7 @@ class Home(QWidget):
         self._grid.addWidget(record, 3, 3, 4, 2)
 
     def addVolCtrl(self):
-        vol = VolumeBox(self)
+        vol = VolumeCtrl(self)
         self._grid.addWidget(vol, 1, 5, 6, 1)
 
     def addBMI(self):
@@ -110,15 +110,14 @@ class DrinkWaterAnim(QFrame):
 class _Bar(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-    def sizeHint(self):
-        return QtCore.QSize(40, 120)
+        self.setFixedHeight(200)
 
     def paintEvent(self, e):
         painter = QPainter(self)
         brush = QBrush()
         brush.setColor(QColor("black"))
         brush.setStyle(Qt.SolidPattern)
+        # FIXME: sizing
         rect = QtCore.QRect(0, 0, painter.device().width(), painter.device().height())
         painter.fillRect(rect, brush)
 
@@ -136,31 +135,59 @@ class _Bar(QWidget):
         font.setPointSize(18)
         painter.setFont(font)
 
-        painter.drawText(25, 25, "{}-->{}<--{}".format(vmin, value, vmax))
+        pc = (value - vmin) / (vmax - vmin)
+        n_steps_to_draw = int(pc * 5)
+        padding = 5.0
+
+        # Define our canvas.
+        d_height = self.height() - (padding * 2)
+        d_width = self.width() - (padding * 2)
+
+        # Draw the bars.
+        step_size = d_height / 5
+        bar_height = step_size * 0.6
+        bar_spacer = step_size * 0.4 / 2
+
+        brush.setColor(QColor("red"))
+
+        for n in range(n_steps_to_draw):
+            rect = QtCore.QRectF(
+                padding,
+                padding + d_height - ((n + 1) * step_size) + bar_spacer,
+                d_width,
+                bar_height,
+            )
+        painter.fillRect(rect, brush)
+
         painter.end()
 
     def _trigger_refresh(self):
         self.update()
 
 
-class VolumeBox(QFrame):
+class VolumeCtrl(QFrame):
     """
     Custom Qt Widget to show a volume bar and dial.
     Intended to be used for water drinking volume control.
     """
 
     def __init__(self, parent=None, steps=5) -> None:
-        super(VolumeBox, self).__init__(parent)
+        super(VolumeCtrl, self).__init__(parent)
         self.setStyleSheet("border: 2px solid black;")
         layout = QVBoxLayout()
+        self.setLayout(layout)
+
+        # setup vbar
         self._bar = _Bar()
         layout.addWidget(self._bar)
 
+        # setup dial
         self._dial = QDial()
+        self._dial.setFixedSize(QSize(150, 150))
+        self._dial.setMouseTracking(True)
+        self._dial.setCursor(Qt.PointingHandCursor)
         self._dial.valueChanged.connect(self._bar._trigger_refresh)
         layout.addWidget(self._dial)
-
-        self.setLayout(layout)
 
     def setBarPadding(self, i):
         self._bar._padding = int(i)
