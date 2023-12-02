@@ -3,7 +3,7 @@ from typing import Union
 from PyQt5 import QtCore
 from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtGui import QPainter, QColor, QBrush, QPalette
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QDial, QGridLayout, QLabel
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QDial, QGridLayout, QLabel, QFrame
 
 
 class Home(QWidget):
@@ -63,9 +63,10 @@ class Color(QWidget):
         self.setPalette(palette)
 
 
-class DrinkWaterAnim(QWidget):
+class DrinkWaterAnim(QFrame):
     def __init__(self, parent: Union[QWidget, None] = None):
         super().__init__(parent)
+        self.setStyleSheet("border: 2px solid black;")
         self.waterLevel = 0
         # self.initAnimation()
 
@@ -142,7 +143,7 @@ class _Bar(QWidget):
         self.update()
 
 
-class VolumeBox(QWidget):
+class VolumeBox(QFrame):
     """
     Custom Qt Widget to show a volume bar and dial.
     Intended to be used for water drinking volume control.
@@ -150,6 +151,7 @@ class VolumeBox(QWidget):
 
     def __init__(self, parent=None, steps=5) -> None:
         super(VolumeBox, self).__init__(parent)
+        self.setStyleSheet("border: 2px solid black;")
         layout = QVBoxLayout()
         self._bar = _Bar()
         layout.addWidget(self._bar)
