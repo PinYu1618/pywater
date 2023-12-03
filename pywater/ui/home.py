@@ -1,9 +1,26 @@
 from typing import Union
 
 from PyQt5 import QtCore
-from PyQt5.QtCore import QTimer, Qt, QSize
-from PyQt5.QtGui import QPainter, QColor, QBrush, QPalette
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QDial, QGridLayout, QLabel, QFrame
+from PyQt5.QtCore import (
+    QTimer,
+    Qt,
+    QSize,
+    QPropertyAnimation,
+    QPoint,
+    QEasingCurve,
+    QRect,
+)
+from PyQt5.QtGui import QPainter, QColor, QBrush, QPaintEvent
+from PyQt5.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QDial,
+    QGridLayout,
+    QLabel,
+    QFrame,
+    QPushButton,
+)
 
 
 class Home(QWidget):
@@ -23,11 +40,25 @@ class Home(QWidget):
         self.addWords()
 
     def addBottle(self):
-        anim = DrinkWaterAnim(self)
-        anim.setStyleSheet("border: 2px solid black;")
-        anim.setMouseTracking(True)
-        anim.setCursor(Qt.PointingHandCursor)
-        self._grid.addWidget(anim, 1, 0, 7, 3)
+        # anim = DrinkWaterAnim(self)
+        # outer box
+        fr = QFrame(self)
+        fr.setStyleSheet("QFrame{border: 2px solid black;}")
+        fr_ly = QVBoxLayout(fr)
+        fr.setLayout(fr_ly)
+
+        glass = DrinkWaterAnim(fr)
+        fr_ly.addWidget(glass)
+
+        btns_ly = QHBoxLayout()
+        btns_ly.addWidget(QPushButton("-100ml"))
+        btns_ly.addWidget(QPushButton("+100ml"))
+        btns_ly.addWidget(QPushButton("+200ml"))
+        btns_ly.addWidget(QPushButton("+500ml"))
+
+        fr_ly.addLayout(btns_ly)
+
+        self._grid.addWidget(fr, 1, 0, 7, 3)
 
     def addFire(self):
         fire = QLabel("(fire icon) 30 days")
@@ -41,6 +72,7 @@ class Home(QWidget):
 
     def addVolCtrl(self):
         vol = VolumeCtrl(self)
+        vol.setStyleSheet("border: 2px solid black;")
         self._grid.addWidget(vol, 1, 5, 6, 1)
 
     def addBMI(self):
@@ -54,27 +86,36 @@ class Home(QWidget):
         self._grid.addWidget(words, 8, 0, 1, 6)
 
 
-class DrinkWaterAnim(QFrame):
+class DrinkWaterAnim(QWidget):
     def __init__(self, parent: Union[QWidget, None] = None):
         super().__init__(parent)
         self.waterLevel = 100
-        # self.initAnimation()
+
+        self.water = QWidget(self)
+        self.water.setStyleSheet("background-color:blue;")
+        self.water.setGeometry(210, 100 + 300 - self.waterLevel, 170, self.waterLevel)
+
+        self.anim = QPropertyAnimation(self.water, b"geometry")
+        self.anim.setEasingCurve(QEasingCurve.InOutCubic)
+        self.anim.setEndValue(QRect(210, 100 + 300 - 200, 170, 200))
+        self.anim.setDuration(1500)
+        self.anim.start()
 
     def initAnimation(self):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update)
         self.timer.start(100)  # Adjust the speed of animation by changing the interval
 
-    def paintEvent(self, event):
+    def paintEvent(self, event: QPaintEvent):
         painter = QPainter(self)
         self.drawGlass(painter)
-        self.drawWater(painter)
+        # self.drawWater(painter)
 
     def drawGlass(self, painter: QPainter):
         # Draw a simple glass cup
         painter.setRenderHint(QPainter.Antialiasing)
         painter.setBrush(QColor(240, 240, 240))
-        painter.drawRect(180, 170, 170, 300)
+        painter.drawRect(210, 100, 170, 300)
 
     def drawWater(self, painter: QPainter):
         painter.setRenderHint(QPainter.Antialiasing)
@@ -98,9 +139,8 @@ class VolumeCtrl(QFrame):
     Intended to be used for water drinking volume control.
     """
 
-    def __init__(self, parent=None, steps=5) -> None:
+    def __init__(self, parent: Union[QWidget, None] = None, steps=5) -> None:
         super(VolumeCtrl, self).__init__(parent)
-        self.setStyleSheet("border: 2px solid black;")
         layout = QVBoxLayout()
         self.setLayout(layout)
 
@@ -122,7 +162,7 @@ class VolumeCtrl(QFrame):
 
 
 class _Bar(QWidget):
-    def __init__(self, parent):
+    def __init__(self, parent: Union[QWidget, None] = None):
         super().__init__(parent)
         self.setFixedHeight(200)
 
