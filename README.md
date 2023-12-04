@@ -24,3 +24,7 @@ pywater/
 ### LICENSE
 
 GPL (required by package pyqt5)
+
+### Credits
+
+- [Fugue icon set by Yusuke Kamiyamane](https://p.yusukekamiyamane.com/)
