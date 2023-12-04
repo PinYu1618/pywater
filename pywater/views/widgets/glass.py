@@ -16,16 +16,16 @@ class Glass(QWidget):
         super().__init__(parent)
         self.water_level = 100
 
-        self.water = QWidget(self)
-        self.water.setStyleSheet("background-color:blue;")
-        self.water.setGeometry(X, Y + H - self.water_level, W, self.water_level)
+        self._water = QWidget(self)
+        self._water.setStyleSheet("background-color:blue;")
+        self._water.setGeometry(X, Y + H - self.water_level, W, self.water_level)
 
-        self._anim = QPropertyAnimation(self.water, b"geometry")
+        self._anim = QPropertyAnimation(self._water, b"geometry")
         self._anim.setEasingCurve(QEasingCurve.InOutCubic)
         self._anim.setEndValue(QRect(X, Y + H - 200, W, 200))
         self._anim.setDuration(DURATION)
 
-    def play_animation(self, lvl: int):
+    def update_water(self, lvl: int):
         self._anim.stop()
         if lvl <= H and lvl >= 0:
             self.water_level = lvl
@@ -36,14 +36,14 @@ class Glass(QWidget):
         painter = QPainter(self)
         self._draw_glass(painter)
 
-    def _draw_glass(self, painter: QPainter):
-        # Draw a simple glass cup
-        painter.setRenderHint(QPainter.Antialiasing)
-        painter.setBrush(QColor(240, 240, 240))
-        painter.drawRect(X, Y, W, H)
-
     def drawSmile(self, painter: QPainter):
         pass
 
     def drawUnhappy(self, painter: QPainter):
         pass
+
+    def _draw_glass(self, painter: QPainter):
+        # Draw a simple glass cup
+        painter.setRenderHint(QPainter.Antialiasing)
+        painter.setBrush(QColor(240, 240, 240))
+        painter.drawRect(X, Y, W, H)

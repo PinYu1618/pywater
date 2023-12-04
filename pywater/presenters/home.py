@@ -2,8 +2,6 @@ from functools import partial
 
 from ..views.home import HomeView
 
-GLASS_H = 300
-
 
 class HomePresenter:
     def __init__(self, view: HomeView, encourage: callable, bmi: callable) -> None:
@@ -35,10 +33,10 @@ class HomePresenter:
             bmi_msg = self._bmi(float(txt_h), float(txt_w))
             self.view.print_msg(bmi_msg)
 
-    def _update_water(self, amount: int) -> None:
+    def _update_water(self, delta: int) -> None:
         print("Updating water...")
         lvl_old = self.view.glass.water_level
-        self.view.glass.play_animation(lvl_old + amount)
+        self.view.glass.update_water(lvl_old + delta)
 
 
 def _is_num(v) -> bool:
