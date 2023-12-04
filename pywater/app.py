@@ -6,7 +6,7 @@ from .db import createDB
 from .notify import setup_notify
 
 
-NOTIFY = True
+NOTIFY = False
 
 
 def run():

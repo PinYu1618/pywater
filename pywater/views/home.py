@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import (
 )
 
 from .widgets.volume import VolumeCtrl
-from .widgets.drink import DrinkWaterAnim
+from .widgets.glass import Glass
 
 
 class HomeView(QWidget):
@@ -37,7 +37,7 @@ class HomeView(QWidget):
         fr_ly = QVBoxLayout(fr)
         fr.setLayout(fr_ly)
 
-        self.glass = DrinkWaterAnim(fr)
+        self.glass = Glass(fr)
         fr_ly.addWidget(self.glass)
 
         btns_ly = QHBoxLayout()
