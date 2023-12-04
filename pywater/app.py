@@ -11,7 +11,7 @@ from .presenter import Presenter
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
-DB = "history.csv"
+DB = "db.json"
 
 
 class App(QMainWindow):
