@@ -7,6 +7,7 @@ from .views.analysis import AnalysisView
 from .views.settings import SettingsView
 from .presenters.home import HomePresenter
 from .models.encourage import encourage
+from .models.bmi import BMI
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
@@ -30,7 +31,7 @@ class Window(QMainWindow):
         tabs.addTab(v_history, "History")
         tabs.addTab(v_analysis, "Analysis")
         tabs.addTab(v_settings, "Settings")
-        self.home = HomePresenter(v_home, encourage)
+        self.home = HomePresenter(v_home, encourage, BMI)
         self.setCentralWidget(tabs)
 
         # status bar

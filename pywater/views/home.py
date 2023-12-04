@@ -70,6 +70,12 @@ class HomeView(QWidget):
         vol.setStyleSheet("border: 2px solid black;")
         self._grid.addWidget(vol, 1, 5, 6, 1)
 
+    def height_text(self) -> str:
+        return self.height_cm.text()
+
+    def weight_text(self) -> str:
+        return self.weight.text()
+
     def set_status(self, msg: str):
         self._status.setText(msg)
 
