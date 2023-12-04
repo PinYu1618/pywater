@@ -1,6 +1,7 @@
 from functools import partial
 
 from ..views.home import HomeView
+from ..models.encourage import encourage
 
 
 class HomePresenter:
