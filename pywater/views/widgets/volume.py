@@ -1,17 +1,15 @@
 from typing import Union
 
-from PyQt5 import QtCore
-from PyQt5.QtCore import (
-    Qt,
-    QSize,
-)
-from PyQt5.QtGui import QPainter, QColor, QBrush
+from PyQt5.QtCore import Qt, QSize, QRect, QRectF
+from PyQt5.QtGui import QPainter, QColor, QBrush, QPaintEvent
 from PyQt5.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QDial,
     QFrame,
 )
+
+BAR_HEIGHT = 200
 
 
 class VolumeCtrl(QFrame):
@@ -20,13 +18,13 @@ class VolumeCtrl(QFrame):
     Intended to be used for water drinking volume control.
     """
 
-    def __init__(self, parent: Union[QWidget, None] = None, steps=5) -> None:
+    def __init__(self, parent: Union[QWidget, None] = None, steps: int = 5) -> None:
         super(VolumeCtrl, self).__init__(parent)
         layout = QVBoxLayout()
         self.setLayout(layout)
 
         # setup vbar
-        self._bar = _Bar(self)
+        self._bar = _Bar(steps, self)
         layout.addWidget(self._bar)
 
         # setup dial
@@ -37,22 +35,19 @@ class VolumeCtrl(QFrame):
         self._dial.valueChanged.connect(self._bar._trigger_refresh)
         layout.addWidget(self._dial)
 
-    def setBarPadding(self, i):
-        self._bar._padding = int(i)
-        self._bar.update()
-
 
 class _Bar(QWidget):
-    def __init__(self, parent: Union[QWidget, None] = None):
+    def __init__(self, steps: int, parent: Union[QWidget, None] = None):
         super().__init__(parent)
-        self.setFixedHeight(200)
+        self._steps = steps
+        self.setFixedHeight(BAR_HEIGHT)
 
-    def paintEvent(self, e):
+    def paintEvent(self, e: QPaintEvent):
         painter = QPainter(self)
         brush = QBrush()
         brush.setColor(QColor("black"))
         brush.setStyle(Qt.SolidPattern)
-        rect = QtCore.QRect(0, 0, self.width(), self.height())
+        rect = QRect(0, 0, self.width(), self.height())
         painter.fillRect(rect, brush)
 
         # Get current state.
@@ -65,26 +60,26 @@ class _Bar(QWidget):
         painter.setPen(pen)
 
         pc = (value - vmin) / (vmax - vmin)
-        n_steps_to_draw = int(pc * 5)
-        padding = 5.0
+        steps = int(pc * self._steps)
+        pad = 5.0
 
         # Define our canvas.
-        d_height = self.height() - (padding * 2)
-        d_width = self.width() - (padding * 2)
+        d_h = self.height() - (pad * 2)
+        d_w = self.width() - (pad * 2)
 
         # Draw the bars.
-        step_size = d_height / 5.0
-        bar_height = step_size * 0.6
-        bar_spacer = step_size * 0.4 / 2.0
+        step_h = d_h / float(self._steps)
+        bar_h = step_h * 0.6
+        bar_spacer = step_h * 0.4 / 2.0
 
         brush.setColor(QColor("red"))
 
-        for n in range(n_steps_to_draw):
-            rect = QtCore.QRectF(
-                padding,
-                padding + d_height - ((n + 1) * step_size) + bar_spacer,
-                d_width,
-                bar_height,
+        for n in range(steps):
+            rect = QRectF(
+                pad,
+                pad + d_h - ((n + 1) * step_h) + bar_spacer,
+                d_w,
+                bar_h,
             )
             painter.fillRect(rect, brush)
 

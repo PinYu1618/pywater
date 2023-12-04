@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import (
     QPushButton,
 )
 
-from .widgets.volume_ctrl import VolumeCtrl
+from .widgets.volume import VolumeCtrl
 from .widgets.drink import DrinkWaterAnim
 
 
@@ -23,6 +23,7 @@ class HomeView(QWidget):
         super().__init__(parent)
         self._grid = QGridLayout()
         self.setLayout(self._grid)
+        self.setStyleSheet("QFrame{border: 2px solid black;}")
         self.addBottle()
         self.addFire()
         self.addRecord()
@@ -33,7 +34,6 @@ class HomeView(QWidget):
     def addBottle(self):
         # outer box
         fr = QFrame(self)
-        fr.setStyleSheet("QFrame{border: 2px solid black;}")
         fr_ly = QVBoxLayout(fr)
         fr.setLayout(fr_ly)
 
