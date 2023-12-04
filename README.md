@@ -1,12 +1,26 @@
 ## pywater
 
+### Features
+- hi
+
 ### Folder Structure
 
 ```
+pywater/
 |
-|_db/
-|_pywater/
-|_tests/
+|_ db/
+|_ pywater/
+|  |_ __init__.py
+|  |_ presenter.py
+|  |_ models/
+|  |_ views/
+|_ tests/
+|_ README.md
+|_ requirements.txt
 ```
 
 ### MVP Architecture
+
+### LICENSE
+
+GPL (required by package pyqt5)

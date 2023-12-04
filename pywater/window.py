@@ -5,9 +5,9 @@ from .views.home import HomeView
 from .views.history import HistoryView
 from .views.analysis import AnalysisView
 from .views.settings import SettingsView
-from .presenters.home import HomePresenter
 from .models.encourage import encourage
 from .models.bmi import BMI
+from .presenter import Presenter
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
@@ -31,13 +31,10 @@ class Window(QMainWindow):
         tabs.addTab(v_history, "History")
         tabs.addTab(v_analysis, "Analysis")
         tabs.addTab(v_settings, "Settings")
-        self.home = HomePresenter(v_home, encourage, BMI)
+        self.presenter = Presenter(v_home, encourage, BMI)
         self.setCentralWidget(tabs)
 
         # status bar
         self.status_bar = QStatusBar()
         self.setStatusBar(self.status_bar)
         self.status_bar.showMessage("PyWater v1.0")
-
-    def onclick(self):
-        print("Clicked!")
