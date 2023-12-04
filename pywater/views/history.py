@@ -1,6 +1,6 @@
 from typing import Union
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QDate
 from PyQt5.QtWidgets import (
     QWidget,
     QLabel,
@@ -29,9 +29,11 @@ class HistoryView(QWidget):
         ly.addWidget(QPushButton("Modify"), 1, 1)
 
         # calender
+        today = QDate().currentDate()
         self.calendar = QCalendarWidget(self)
         self.calendar.setMouseTracking(True)
         self.calendar.setCursor(Qt.PointingHandCursor)
+        self.calendar.setSelectedDate(today)
         ly.addWidget(self.calendar, 2, 0)
 
         # data
@@ -40,6 +42,7 @@ class HistoryView(QWidget):
         ly.addWidget(fr, 2, 1)
         fr.setLayout(form)
         self._lb_date = QLabel("Date: ???", fr)
+        self._show_date(today)
         self._i_water = QLineEdit(fr)
         self._i_height = QLineEdit(fr)
         self._i_weight = QLineEdit(fr)
@@ -52,9 +55,6 @@ class HistoryView(QWidget):
         # save button
         self.btn_save = QPushButton("Save", self)
         ly.addWidget(self.btn_save, 3, 1)
-
-    # def showDate(self, date):
-    #    self.lbl.setText(date.toString())
 
     def input_water(self) -> str:
         return self._i_water.text()
@@ -77,3 +77,6 @@ class HistoryView(QWidget):
     def selected_date(self) -> str:
         dateselected = self.calendar.selectedDate()
         return str(dateselected.toPyDate())
+
+    def _show_date(self, date: QDate):
+        self._lb_date.setText("Date: " + date.toString())

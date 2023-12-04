@@ -11,7 +11,7 @@ from .presenter import Presenter
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
-DB = "db.json"
+DB = "db-dev.json"
 
 
 class App(QMainWindow):
