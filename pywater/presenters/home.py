@@ -1,12 +1,12 @@
 from functools import partial
 
 from ..views.home import HomeView
-from ..models.encourage import encourage
 
 
 class HomePresenter:
-    def __init__(self, view: HomeView) -> None:
+    def __init__(self, view: HomeView, encourage: callable) -> None:
         self.view = view
+        self.view.set_status(encourage())
         self._connect_signals()
 
     def _connect_signals(self):

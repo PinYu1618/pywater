@@ -29,7 +29,7 @@ class HomeView(QWidget):
         self.addRecord()
         self.addVolCtrl()
         self.addBMI()
-        self.addWords()
+        self._create_status()
 
     def addBottle(self):
         # outer box
@@ -74,7 +74,10 @@ class HomeView(QWidget):
         bmi.setStyleSheet("border: 2px solid black;")
         self._grid.addWidget(bmi, 7, 3, 1, 3)
 
-    def addWords(self):
-        words = QLabel("Hello world.")
-        words.setStyleSheet("border: 2px solid black;")
-        self._grid.addWidget(words, 8, 0, 1, 6)
+    def set_status(self, msg: str):
+        self._status.setText(msg)
+
+    def _create_status(self):
+        self._status = QLabel()
+        self._status.setStyleSheet("border: 2px solid black;")
+        self._grid.addWidget(self._status, 8, 0, 1, 6)

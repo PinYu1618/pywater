@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtCore import QSize
 from PyQt5.QtWidgets import QMainWindow, QTabWidget, QStatusBar
 
 from .views.home import HomeView
@@ -6,6 +6,7 @@ from .views.history import HistoryView
 from .views.analysis import AnalysisView
 from .views.settings import SettingsView
 from .presenters.home import HomePresenter
+from .models.encourage import encourage
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
@@ -29,7 +30,7 @@ class Window(QMainWindow):
         tabs.addTab(v_history, "History")
         tabs.addTab(v_analysis, "Analysis")
         tabs.addTab(v_settings, "Settings")
-        self.home = HomePresenter(v_home)
+        self.home = HomePresenter(v_home, encourage)
         self.setCentralWidget(tabs)
 
         # status bar
