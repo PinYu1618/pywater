@@ -37,14 +37,18 @@ class HomeView(QWidget):
         fr_ly = QVBoxLayout(fr)
         fr.setLayout(fr_ly)
 
-        glass = DrinkWaterAnim(fr)
-        fr_ly.addWidget(glass)
+        self.glass = DrinkWaterAnim(fr)
+        fr_ly.addWidget(self.glass)
 
         btns_ly = QHBoxLayout()
-        btns_ly.addWidget(QPushButton("-100ml"))
-        btns_ly.addWidget(QPushButton("+100ml"))
-        btns_ly.addWidget(QPushButton("+200ml"))
-        btns_ly.addWidget(QPushButton("+500ml"))
+        self.btnsub = QPushButton("-100ml")
+        self.btn100 = QPushButton("+100ml")
+        self.btn200 = QPushButton("+200ml")
+        self.btn500 = QPushButton("+500ml")
+        btns_ly.addWidget(self.btnsub)
+        btns_ly.addWidget(self.btn100)
+        btns_ly.addWidget(self.btn200)
+        btns_ly.addWidget(self.btn500)
 
         fr_ly.addLayout(btns_ly)
 

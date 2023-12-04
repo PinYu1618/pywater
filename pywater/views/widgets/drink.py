@@ -1,11 +1,6 @@
 from typing import Union
 
-from PyQt5.QtCore import (
-    QTimer,
-    QPropertyAnimation,
-    QEasingCurve,
-    QRect,
-)
+from PyQt5.QtCore import QPropertyAnimation, QEasingCurve, QRect, pyqtSlot
 from PyQt5.QtGui import QPainter, QColor, QPaintEvent
 from PyQt5.QtWidgets import QWidget
 
@@ -27,16 +22,19 @@ class DrinkWaterAnim(QWidget):
             GLASS_X, GLASS_Y + GLASS_H - self._waterLvl, GLASS_W, self._waterLvl
         )
 
-        self.anim = QPropertyAnimation(self.water, b"geometry")
-        self.anim.setEasingCurve(QEasingCurve.InOutCubic)
-        self.anim.setEndValue(QRect(GLASS_X, GLASS_Y + GLASS_H - 200, GLASS_W, 200))
-        self.anim.setDuration(DURATION)
-        self.anim.start()
+        self._anim = QPropertyAnimation(self.water, b"geometry")
+        self._anim.setEasingCurve(QEasingCurve.InOutCubic)
+        self._anim.setEndValue(QRect(GLASS_X, GLASS_Y + GLASS_H - 200, GLASS_W, 200))
+        self._anim.setDuration(DURATION)
 
-    def initAnimation(self):
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.update)
-        self.timer.start(100)  # Adjust the speed of animation by changing the interval
+    @pyqtSlot(float)
+    def setup_animation(self, lvl: float):
+        self._anim.stop()
+        if lvl <= float(GLASS_H) and lvl >= 0.0:
+            self._anim.setEndValue(
+                QRect(GLASS_X, GLASS_Y + GLASS_H - lvl, GLASS_W, lvl)
+            )
+            self._anim.start()
 
     def paintEvent(self, event: QPaintEvent):
         painter = QPainter(self)
