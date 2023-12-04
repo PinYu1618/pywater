@@ -1,6 +1,6 @@
 from typing import Union
 
-from PyQt5.QtCore import QPropertyAnimation, QEasingCurve, QRect, pyqtSlot
+from PyQt5.QtCore import QPropertyAnimation, QEasingCurve, QRect
 from PyQt5.QtGui import QPainter, QColor, QPaintEvent
 from PyQt5.QtWidgets import QWidget
 
@@ -27,7 +27,6 @@ class DrinkWaterAnim(QWidget):
         self._anim.setEndValue(QRect(GLASS_X, GLASS_Y + GLASS_H - 200, GLASS_W, 200))
         self._anim.setDuration(DURATION)
 
-    @pyqtSlot(float)
     def setup_animation(self, lvl: float):
         self._anim.stop()
         if lvl <= float(GLASS_H) and lvl >= 0.0:

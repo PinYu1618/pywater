@@ -17,4 +17,5 @@ class HomePresenter:
     def _add_water(self, amount: int) -> None:
         print("Adding water...")
         print(amount)
-        self.view.glass._anim.start()
+        lvl_old = self.view.glass._waterLvl
+        self.view.glass.setup_animation(lvl_old + amount)
