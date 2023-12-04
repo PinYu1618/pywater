@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import (
 )
 
 
-class History(QWidget):
+class HistoryView(QWidget):
     def __init__(self, parent: Union[QWidget, None] = None):
         super().__init__(parent)
         grid = QGridLayout(self)

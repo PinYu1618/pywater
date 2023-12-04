@@ -23,7 +23,7 @@ from PyQt5.QtWidgets import (
 )
 
 
-class Home(QWidget):
+class HomeView(QWidget):
     """
     Home page of the application, planned to be a fancy dashboard or panel
     """
@@ -89,11 +89,11 @@ class Home(QWidget):
 class DrinkWaterAnim(QWidget):
     def __init__(self, parent: Union[QWidget, None] = None):
         super().__init__(parent)
-        self.waterLevel = 100
+        self._waterLvl = 100
 
         self.water = QWidget(self)
         self.water.setStyleSheet("background-color:blue;")
-        self.water.setGeometry(210, 100 + 300 - self.waterLevel, 170, self.waterLevel)
+        self.water.setGeometry(210, 100 + 300 - self._waterLvl, 170, self._waterLvl)
 
         self.anim = QPropertyAnimation(self.water, b"geometry")
         self.anim.setEasingCurve(QEasingCurve.InOutCubic)
@@ -109,22 +109,12 @@ class DrinkWaterAnim(QWidget):
     def paintEvent(self, event: QPaintEvent):
         painter = QPainter(self)
         self.drawGlass(painter)
-        # self.drawWater(painter)
 
     def drawGlass(self, painter: QPainter):
         # Draw a simple glass cup
         painter.setRenderHint(QPainter.Antialiasing)
         painter.setBrush(QColor(240, 240, 240))
         painter.drawRect(210, 100, 170, 300)
-
-    def drawWater(self, painter: QPainter):
-        painter.setRenderHint(QPainter.Antialiasing)
-        painter.setBrush(QColor(0, 119, 190))  # Adjust color as needed
-
-        # Calculate the water level within the glass
-        waterHeight = 300 - self.waterLevel
-        if waterHeight > 0:
-            painter.drawRect(180, 170 + 300 - self.waterLevel, 170, self.waterLevel)
 
     def drawSmile(self, painter: QPainter):
         pass

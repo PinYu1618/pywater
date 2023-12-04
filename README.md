@@ -4,7 +4,9 @@
 
 ```
 |
-db/
-pywater/
-tests/
+|_db/
+|_pywater/
+|_tests/
 ```
+
+### MVP Architecture

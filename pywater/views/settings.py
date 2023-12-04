@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import (
 )
 
 
-class Settings(QWidget):
+class SettingsView(QWidget):
     def __init__(self, parent: Union[QWidget, None] = None):
         super().__init__(parent)
         rbox = QFormLayout()
