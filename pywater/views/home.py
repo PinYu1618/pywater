@@ -40,7 +40,6 @@ class HomeView(QWidget):
         self.addWords()
 
     def addBottle(self):
-        # anim = DrinkWaterAnim(self)
         # outer box
         fr = QFrame(self)
         fr.setStyleSheet("QFrame{border: 2px solid black;}")

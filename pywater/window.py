@@ -5,6 +5,7 @@ from .views.home import HomeView
 from .views.history import HistoryView
 from .views.analysis import AnalysisView
 from .views.settings import SettingsView
+from .presenters.home import HomePresenter
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
@@ -19,12 +20,17 @@ class Window(QMainWindow):
         self.setFixedSize(QSize(WINDOW_WIDTH, WINDOW_HEIGHT))
 
         # main contents
-        self.tabs = QTabWidget(self)
-        self.tabs.addTab(HomeView(self.tabs), "Home")
-        self.tabs.addTab(HistoryView(self.tabs), "History")
-        self.tabs.addTab(AnalysisView(self.tabs), "Analysis")
-        self.tabs.addTab(SettingsView(self.tabs), "Settings")
-        self.setCentralWidget(self.tabs)
+        tabs = QTabWidget(self)
+        v_home = HomeView(tabs)
+        v_history = HistoryView(tabs)
+        v_analysis = AnalysisView(tabs)
+        v_settings = SettingsView(tabs)
+        tabs.addTab(v_home, "Home")
+        tabs.addTab(v_history, "History")
+        tabs.addTab(v_analysis, "Analysis")
+        tabs.addTab(v_settings, "Settings")
+        self.home = HomePresenter(v_home)
+        self.setCentralWidget(tabs)
 
         # status bar
         self.status_bar = QStatusBar()
