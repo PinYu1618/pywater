@@ -3,6 +3,7 @@ from typing import Callable
 
 from .views.home import HomeView
 from .models.stat import Stat
+from .models.db import DbHandler
 
 
 class Presenter:
@@ -10,6 +11,7 @@ class Presenter:
         self,
         home: HomeView,
         stat: Stat,
+        db: DbHandler,
         encourage: Callable,
         bmi: Callable,
     ) -> None:
@@ -17,6 +19,7 @@ class Presenter:
         self._encourage = encourage
         self._bmi = bmi
         self._stat = stat
+        self._db = db
         self._init_ui()
         self._connect_signals()
 

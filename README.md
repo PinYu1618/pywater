@@ -10,7 +10,7 @@ pywater/
 |
 |_ db/
 |_ pywater/
-|  |_ __init__.py
+|  |_ __init__.py   # Enables pywater/ to be a Python package
 |  |_ presenter.py
 |  |_ models/
 |  |_ views/

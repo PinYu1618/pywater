@@ -9,10 +9,12 @@ from .views.settings import SettingsView
 from .models.encourage import encourage
 from .models.bmi import BMI
 from .models.stat import Stat
+from .models.db import DbHandler
 from .presenter import Presenter
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
+DB = "history.csv"
 
 
 class App(QMainWindow):
@@ -33,7 +35,9 @@ class App(QMainWindow):
         tabs.addTab(v_history, "History")
         tabs.addTab(v_analysis, "Analysis")
         tabs.addTab(v_settings, "Settings")
-        self.presenter = Presenter(v_home, Stat(water=100), encourage, BMI)
+        self.presenter = Presenter(
+            v_home, Stat(water=100), DbHandler(DB), encourage, BMI
+        )
         self.setCentralWidget(tabs)
 
         # status bar

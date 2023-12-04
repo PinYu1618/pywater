@@ -8,7 +8,7 @@ X = 210
 Y = 100
 W = 170
 H = 300
-DURATION = 1500
+DURATION = 1300
 
 
 class Glass(QWidget):
