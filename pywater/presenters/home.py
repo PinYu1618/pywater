@@ -25,9 +25,9 @@ class HomePresenter:
         txt_h = self.view.height_text()
         txt_w = self.view.weight_text()
         if not _is_num(txt_h):
-            self.view.set_status("Height input error")
+            self.view.set_status("Height input error. Please enter a number")
         elif not _is_num(txt_w):
-            self.view.set_status("Weight input error")
+            self.view.set_status("Weight input error. Please enter a number")
         else:
             print("Calculating...")
             bmi_msg = self._bmi(float(txt_h), float(txt_w))
