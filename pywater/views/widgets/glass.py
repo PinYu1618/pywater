@@ -25,7 +25,9 @@ class Glass(QWidget):
 
     def update_water(self, pc: float):
         self._anim.stop()
-        if pc <= 1.0 and pc >= 0.0:
+        if pc >= 0.0:
+            if pc >= 1.0:
+                pc = 1.0
             lvl = round(float(H) * pc)
             self._anim.setEndValue(QRect(X, Y + H - lvl, W, lvl))
             self._anim.start()
