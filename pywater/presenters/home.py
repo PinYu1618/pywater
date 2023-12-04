@@ -12,7 +12,7 @@ class HomePresenter:
         self._connect_signals()
 
     def _init_ui(self):
-        self.view.set_status(self._encourage())
+        self.view.print_msg(self._encourage())
 
     def _connect_signals(self):
         self.view.btnsub.clicked.connect(partial(self._add_water, -100))
@@ -25,13 +25,13 @@ class HomePresenter:
         txt_h = self.view.height_text()
         txt_w = self.view.weight_text()
         if not _is_num(txt_h):
-            self.view.set_status("Height input error. Please enter a number")
+            self.view.print_msg("Height input error. Please enter a number")
         elif not _is_num(txt_w):
-            self.view.set_status("Weight input error. Please enter a number")
+            self.view.print_msg("Weight input error. Please enter a number")
         else:
             print("Calculating...")
             bmi_msg = self._bmi(float(txt_h), float(txt_w))
-            self.view.set_status(bmi_msg)
+            self.view.print_msg(bmi_msg)
 
     def _add_water(self, amount: int) -> None:
         print("Adding water...")

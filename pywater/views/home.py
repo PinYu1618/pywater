@@ -26,14 +26,23 @@ class HomeView(QWidget):
         self._grid = QGridLayout()
         self.setLayout(self._grid)
         self.setStyleSheet("QFrame{border: 2px solid black;}")
-        self.addBottle()
-        self.addFire()
+        self._create_glass()
+        self._create_fire()
         self._create_form()
-        self.addVolCtrl()
+        self._create_volume()
         self._create_bmi()
-        self._create_status()
+        self._create_msg()
 
-    def addBottle(self):
+    def height_text(self) -> str:
+        return self._i_height.text()
+
+    def weight_text(self) -> str:
+        return self._i_weight.text()
+
+    def print_msg(self, msg: str):
+        self._msg.setText(msg)
+
+    def _create_glass(self):
         # outer box
         fr = QFrame(self)
         fr_ly = QVBoxLayout(fr)
@@ -56,44 +65,39 @@ class HomeView(QWidget):
 
         self._grid.addWidget(fr, 1, 0, 7, 3)
 
-    def addFire(self):
+    def _create_fire(self):
         fire = QLabel("(fire icon) 30 days")
         fire.setStyleSheet("border: 2px solid black;")
         self._grid.addWidget(fire, 1, 3, 2, 2)
 
-    def addVolCtrl(self):
+    def _create_volume(self):
+        # add volume control box
         vol = VolumeCtrl(self)
         vol.setStyleSheet("border: 2px solid black;")
         self._grid.addWidget(vol, 1, 5, 6, 1)
 
-    def height_text(self) -> str:
-        return self._i_height.text()
-
-    def weight_text(self) -> str:
-        return self._i_weight.text()
-
-    def set_status(self, msg: str):
-        self._status.setText(msg)
-
     def _create_form(self):
+        # add form for input height and weight
         fr = QFrame(self)
         ly = QFormLayout()
         fr.setLayout(ly)
         self._i_height = QLineEdit(fr)
         self._i_weight = QLineEdit(fr)
-        self.btn_bmi = QPushButton("Calculate", fr)
+        self.btn_bmi = QPushButton("Submit", fr)
         ly.addRow(QLabel("Height:"), self._i_height)
         ly.addRow(QLabel("Weight:"), self._i_weight)
         ly.addRow(self.btn_bmi)
         self._grid.addWidget(fr, 3, 3, 4, 2)
 
     def _create_bmi(self):
+        # add bmi status display
         fr = QFrame(self)
         ly = QGridLayout()
         fr.setLayout(ly)
         self._grid.addWidget(fr, 7, 3, 1, 3)
 
-    def _create_status(self):
-        self._status = QLabel()
-        self._status.setStyleSheet("border: 2px solid black;")
-        self._grid.addWidget(self._status, 8, 0, 1, 6)
+    def _create_msg(self):
+        # add message box
+        self._msg = QLabel()
+        self._msg.setStyleSheet("border: 2px solid black;")
+        self._grid.addWidget(self._msg, 8, 0, 1, 6)
