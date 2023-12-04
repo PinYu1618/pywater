@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import (
     QLabel,
     QFrame,
     QPushButton,
+    QLineEdit,
 )
 
 from .widgets.volume import VolumeCtrl
@@ -28,7 +29,7 @@ class HomeView(QWidget):
         self.addFire()
         self.addRecord()
         self.addVolCtrl()
-        self.addBMI()
+        self._create_bmi()
         self._create_status()
 
     def addBottle(self):
@@ -69,13 +70,22 @@ class HomeView(QWidget):
         vol.setStyleSheet("border: 2px solid black;")
         self._grid.addWidget(vol, 1, 5, 6, 1)
 
-    def addBMI(self):
-        bmi = QLabel("BMI: ???")
-        bmi.setStyleSheet("border: 2px solid black;")
-        self._grid.addWidget(bmi, 7, 3, 1, 3)
-
     def set_status(self, msg: str):
         self._status.setText(msg)
+
+    def _create_bmi(self):
+        fr = QFrame(self)
+        ly = QGridLayout()
+        fr.setLayout(ly)
+        self.height_cm = QLineEdit(fr)
+        self.weight = QLineEdit(fr)
+        self.btn_bmi = QPushButton("Calculate", fr)
+        ly.addWidget(QLabel("Height:"), 0, 0, 1, 1)
+        ly.addWidget(QLabel("Weight:"), 0, 3, 1, 1)
+        ly.addWidget(self.height_cm, 0, 1, 1, 1)
+        ly.addWidget(self.weight, 0, 4, 1, 1)
+        ly.addWidget(self.btn_bmi, 0, 7, 1, 1)
+        self._grid.addWidget(fr, 7, 3, 1, 3)
 
     def _create_status(self):
         self._status = QLabel()

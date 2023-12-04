@@ -1,6 +1,6 @@
 def BMI(height, weight) -> str:
     # 計算BMI
-    bmi = round(float(weight) / float(height) ** 2, 2)
+    bmi = round(float(weight) / (float(height) / 100.0) ** 2, 2)
     # 判斷BMI
     if bmi < 18.5:
         warning = "過輕，建議增加飲食營養和適量運動。"
