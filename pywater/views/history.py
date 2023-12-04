@@ -8,6 +8,8 @@ from PyQt5.QtWidgets import (
     QGridLayout,
     QPushButton,
     QFrame,
+    QFormLayout,
+    QLineEdit,
 )
 
 
@@ -20,8 +22,8 @@ class HistoryView(QWidget):
 
         # header
         header = QLabel("History Manager")
-        header.setStyleSheet("border: 2px solid black;")
-        ly.addWidget(header, 0, 0)
+        header.setStyleSheet("border: 2px solid black; font: bold 24px; padding: 6px;")
+        ly.addWidget(header, 0, 0, 1, 2)
 
         # modify button
         ly.addWidget(QPushButton("Modify"), 1, 1)
@@ -35,7 +37,18 @@ class HistoryView(QWidget):
         ly.addWidget(self.calendar, 2, 0)
 
         # data
-        ly.addWidget(QFrame(self), 2, 1)
+        fr = QFrame(self)
+        form = QFormLayout(self)
+        ly.addWidget(fr, 2, 1)
+        fr.setLayout(form)
+        self._i_water = QLineEdit(fr)
+        self._i_height = QLineEdit(fr)
+        self._i_weight = QLineEdit(fr)
+        form.addRow(QLabel("Date: ???", fr))
+        form.addRow(QLabel("", fr))
+        form.addRow(QLabel("Water (ml):"), self._i_water)
+        form.addRow(QLabel("Height (cm):"), self._i_height)
+        form.addRow(QLabel("Weight (kg):"), self._i_weight)
 
         # save button
         self.btn_save = QPushButton("Save", self)
@@ -44,8 +57,24 @@ class HistoryView(QWidget):
     # def showDate(self, date):
     #    self.lbl.setText(date.toString())
 
-    def calendar_date(self):
-        dateselected = self.calendar.selectedDate()
-        date_in_string = str(dateselected.toPyDate())
+    def input_water(self) -> str:
+        return self._i_water.text()
 
-        self.lbl.setText("Date Is : " + date_in_string)
+    def input_height(self) -> str:
+        return self._i_height.text()
+
+    def input_weight(self) -> str:
+        return self._i_weight.text()
+
+    def set_water(self, water: int):
+        self._i_water.setText(str(water))
+
+    def set_height(self, height: int):
+        self._i_height.setText(str(height))
+
+    def set_weight(self, weight: int):
+        self._i_weight.setText(str(weight))
+
+    def selected_date(self) -> str:
+        dateselected = self.calendar.selectedDate()
+        return str(dateselected.toPyDate())
