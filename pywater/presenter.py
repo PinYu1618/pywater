@@ -2,17 +2,28 @@ from functools import partial
 from typing import Callable
 
 from .views.home import HomeView
+from .models.stat import Stat
 
 
 class Presenter:
-    def __init__(self, _v_home: HomeView, encourage: Callable, bmi: Callable) -> None:
-        self._v_home = _v_home
+    def __init__(
+        self,
+        home: HomeView,
+        stat: Stat,
+        encourage: Callable,
+        bmi: Callable,
+    ) -> None:
+        self._v_home = home
         self._encourage = encourage
         self._bmi = bmi
+        self._stat = stat
         self._init_ui()
         self._connect_signals()
 
     def _init_ui(self):
+        lvl = float(self._stat.water)
+        mx = float(self._stat.water_per_day())
+        self._v_home.glass.update_water(lvl / mx)
         self._v_home.print_msg(self._encourage())
 
     def _connect_signals(self):
@@ -36,8 +47,11 @@ class Presenter:
 
     def _update_water(self, delta: int) -> None:
         print("Updating water...")
-        lvl_old = self._v_home.glass.water_level
-        self._v_home.glass.update_water(lvl_old + delta)
+        lvl = float(self._stat.water + delta)
+        if lvl >= 0.0:
+            self._stat.water += delta
+            mx = float(self._stat.water_per_day())
+            self._v_home.glass.update_water(lvl / mx)
 
 
 def _is_num(v) -> bool:

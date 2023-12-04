@@ -8,6 +8,7 @@ from .views.analysis import AnalysisView
 from .views.settings import SettingsView
 from .models.encourage import encourage
 from .models.bmi import BMI
+from .models.stat import Stat
 from .presenter import Presenter
 
 WINDOW_WIDTH = 1280
@@ -32,7 +33,7 @@ class App(QMainWindow):
         tabs.addTab(v_history, "History")
         tabs.addTab(v_analysis, "Analysis")
         tabs.addTab(v_settings, "Settings")
-        self.presenter = Presenter(v_home, encourage, BMI)
+        self.presenter = Presenter(v_home, Stat(water=100), encourage, BMI)
         self.setCentralWidget(tabs)
 
         # status bar
