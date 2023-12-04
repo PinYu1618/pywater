@@ -2,6 +2,8 @@ from functools import partial
 
 from ..views.home import HomeView
 
+GLASS_H = 300
+
 
 class HomePresenter:
     def __init__(self, view: HomeView, encourage: callable, bmi: callable) -> None:
@@ -15,10 +17,10 @@ class HomePresenter:
         self.view.print_msg(self._encourage())
 
     def _connect_signals(self):
-        self.view.btnsub.clicked.connect(partial(self._add_water, -100))
-        self.view.btn100.clicked.connect(partial(self._add_water, 100))
-        self.view.btn200.clicked.connect(partial(self._add_water, 200))
-        self.view.btn500.clicked.connect(partial(self._add_water, 500))
+        self.view.btnsub.clicked.connect(partial(self._update_water, -100))
+        self.view.btn100.clicked.connect(partial(self._update_water, 100))
+        self.view.btn200.clicked.connect(partial(self._update_water, 200))
+        self.view.btn500.clicked.connect(partial(self._update_water, 500))
         self.view.btn_bmi.clicked.connect(self._calc_bmi)
 
     def _calc_bmi(self):
@@ -33,11 +35,10 @@ class HomePresenter:
             bmi_msg = self._bmi(float(txt_h), float(txt_w))
             self.view.print_msg(bmi_msg)
 
-    def _add_water(self, amount: int) -> None:
-        print("Adding water...")
-        print(amount)
-        lvl_old = self.view.glass._waterLvl
-        self.view.glass.setup_animation(lvl_old + amount)
+    def _update_water(self, amount: int) -> None:
+        print("Updating water...")
+        lvl_old = self.view.glass.water_level
+        self.view.glass.play_animation(lvl_old + amount)
 
 
 def _is_num(v) -> bool:

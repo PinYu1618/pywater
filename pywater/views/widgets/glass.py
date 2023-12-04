@@ -14,28 +14,29 @@ DURATION = 1500
 class Glass(QWidget):
     def __init__(self, parent: Union[QWidget, None] = None):
         super().__init__(parent)
-        self._waterLvl = 100
+        self.water_level = 100
 
         self.water = QWidget(self)
         self.water.setStyleSheet("background-color:blue;")
-        self.water.setGeometry(X, Y + H - self._waterLvl, W, self._waterLvl)
+        self.water.setGeometry(X, Y + H - self.water_level, W, self.water_level)
 
         self._anim = QPropertyAnimation(self.water, b"geometry")
         self._anim.setEasingCurve(QEasingCurve.InOutCubic)
         self._anim.setEndValue(QRect(X, Y + H - 200, W, 200))
         self._anim.setDuration(DURATION)
 
-    def setup_animation(self, lvl: int):
+    def play_animation(self, lvl: int):
         self._anim.stop()
         if lvl <= H and lvl >= 0:
+            self.water_level = lvl
             self._anim.setEndValue(QRect(X, Y + H - lvl, W, lvl))
             self._anim.start()
 
     def paintEvent(self, event: QPaintEvent):
         painter = QPainter(self)
-        self.drawGlass(painter)
+        self._draw_glass(painter)
 
-    def drawGlass(self, painter: QPainter):
+    def _draw_glass(self, painter: QPainter):
         # Draw a simple glass cup
         painter.setRenderHint(QPainter.Antialiasing)
         painter.setBrush(QColor(240, 240, 240))
