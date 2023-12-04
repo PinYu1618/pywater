@@ -36,11 +36,8 @@ class Glass(QWidget):
         painter = QPainter(self)
         self._draw_glass(painter)
 
-    def drawSmile(self, painter: QPainter):
-        pass
-
-    def drawUnhappy(self, painter: QPainter):
-        pass
+    # def drawSmile(self, painter: QPainter):
+    #    pass
 
     def _draw_glass(self, painter: QPainter):
         # Draw a simple glass cup

@@ -1,11 +1,8 @@
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QSize
-from PyQt5.QtWidgets import QMainWindow, QTabWidget, QStatusBar
+from PyQt5.QtWidgets import QMainWindow, QStatusBar
 
-from .views.home import HomeView
-from .views.history import HistoryView
-from .views.analysis import AnalysisView
-from .views.settings import SettingsView
+from .views import View
 from .models.encourage import encourage
 from .models.bmi import BMI
 from .models.stat import Stat
@@ -26,19 +23,9 @@ class App(QMainWindow):
         self.setFixedSize(QSize(WINDOW_WIDTH, WINDOW_HEIGHT))
 
         # main contents
-        tabs = QTabWidget(self)
-        v_home = HomeView(tabs)
-        v_history = HistoryView(tabs)
-        v_analysis = AnalysisView(tabs)
-        v_settings = SettingsView(tabs)
-        tabs.addTab(v_home, "Home")
-        tabs.addTab(v_history, "History")
-        tabs.addTab(v_analysis, "Analysis")
-        tabs.addTab(v_settings, "Settings")
-        self.presenter = Presenter(
-            v_home, Stat(water=100), DbHandler(DB), encourage, BMI
-        )
-        self.setCentralWidget(tabs)
+        view = View(self)
+        self.presenter = Presenter(view, Stat(water=100), DbHandler(DB), encourage, BMI)
+        self.setCentralWidget(view)
 
         # status bar
         self.status_bar = QStatusBar()

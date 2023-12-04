@@ -31,20 +31,19 @@ class HistoryView(QWidget):
         # calender
         self.calendar = QCalendarWidget(self)
         self.calendar.setMouseTracking(True)
-        self.calendar.selectionChanged.connect(self.calendar_date)
-        # self.calendar.setFixedSize(QSize(400, 400))
         self.calendar.setCursor(Qt.PointingHandCursor)
         ly.addWidget(self.calendar, 2, 0)
 
         # data
         fr = QFrame(self)
-        form = QFormLayout(self)
+        form = QFormLayout()
         ly.addWidget(fr, 2, 1)
         fr.setLayout(form)
+        self._lb_date = QLabel("Date: ???", fr)
         self._i_water = QLineEdit(fr)
         self._i_height = QLineEdit(fr)
         self._i_weight = QLineEdit(fr)
-        form.addRow(QLabel("Date: ???", fr))
+        form.addRow(self._lb_date)
         form.addRow(QLabel("", fr))
         form.addRow(QLabel("Water (ml):"), self._i_water)
         form.addRow(QLabel("Height (cm):"), self._i_height)
