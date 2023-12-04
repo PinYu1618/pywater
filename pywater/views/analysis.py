@@ -8,7 +8,7 @@ class AnalysisView(QWidget):
         super().__init__(parent)
 
 
-import pandas as pd
+"""import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import datetime
 
@@ -124,3 +124,4 @@ def delete_data():
         save_data()
     except ValueError:
         print("\n✖錯誤！請重新輸入正確的日期格式。\n_____________________")
+"""

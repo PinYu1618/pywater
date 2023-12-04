@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import (
     QFrame,
     QPushButton,
     QLineEdit,
+    QFormLayout,
 )
 
 from .widgets.volume import VolumeCtrl
@@ -27,7 +28,7 @@ class HomeView(QWidget):
         self.setStyleSheet("QFrame{border: 2px solid black;}")
         self.addBottle()
         self.addFire()
-        self.addRecord()
+        self._create_form()
         self.addVolCtrl()
         self._create_bmi()
         self._create_status()
@@ -60,37 +61,36 @@ class HomeView(QWidget):
         fire.setStyleSheet("border: 2px solid black;")
         self._grid.addWidget(fire, 1, 3, 2, 2)
 
-    def addRecord(self):
-        record = QLabel()
-        record.setStyleSheet("border: 2px solid black;")
-        self._grid.addWidget(record, 3, 3, 4, 2)
-
     def addVolCtrl(self):
         vol = VolumeCtrl(self)
         vol.setStyleSheet("border: 2px solid black;")
         self._grid.addWidget(vol, 1, 5, 6, 1)
 
     def height_text(self) -> str:
-        return self.height_cm.text()
+        return self._i_height.text()
 
     def weight_text(self) -> str:
-        return self.weight.text()
+        return self._i_weight.text()
 
     def set_status(self, msg: str):
         self._status.setText(msg)
+
+    def _create_form(self):
+        fr = QFrame(self)
+        ly = QFormLayout()
+        fr.setLayout(ly)
+        self._i_height = QLineEdit(fr)
+        self._i_weight = QLineEdit(fr)
+        self.btn_bmi = QPushButton("Calculate", fr)
+        ly.addRow(QLabel("Height:"), self._i_height)
+        ly.addRow(QLabel("Weight:"), self._i_weight)
+        ly.addRow(self.btn_bmi)
+        self._grid.addWidget(fr, 3, 3, 4, 2)
 
     def _create_bmi(self):
         fr = QFrame(self)
         ly = QGridLayout()
         fr.setLayout(ly)
-        self.height_cm = QLineEdit(fr)
-        self.weight = QLineEdit(fr)
-        self.btn_bmi = QPushButton("Calculate", fr)
-        ly.addWidget(QLabel("Height:"), 0, 0, 1, 1)
-        ly.addWidget(QLabel("Weight:"), 0, 3, 1, 1)
-        ly.addWidget(self.height_cm, 0, 1, 1, 1)
-        ly.addWidget(self.weight, 0, 4, 1, 1)
-        ly.addWidget(self.btn_bmi, 0, 7, 1, 1)
         self._grid.addWidget(fr, 7, 3, 1, 3)
 
     def _create_status(self):
