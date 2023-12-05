@@ -56,7 +56,7 @@ class _Bar(QWidget):
         value = dial.value()
 
         pen = painter.pen()
-        pen.setColor(QColor("red"))
+        pen.setColor(QColor("#60a5fa"))
         painter.setPen(pen)
 
         pc = (value - vmin) / (vmax - vmin)
@@ -72,7 +72,7 @@ class _Bar(QWidget):
         bar_h = step_h * 0.6
         bar_spacer = step_h * 0.4 / 2.0
 
-        brush.setColor(QColor("red"))
+        brush.setColor(QColor("#60a5fa"))
 
         for n in range(steps):
             rect = QRectF(
