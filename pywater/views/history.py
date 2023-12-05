@@ -25,9 +25,6 @@ class HistoryView(QWidget):
         header.setStyleSheet("border: 2px solid black; font: bold 24px; padding: 6px;")
         ly.addWidget(header, 0, 0, 1, 2)
 
-        # modify button
-        ly.addWidget(QPushButton("Modify"), 1, 1)
-
         # calender
         today = QDate().currentDate()
         self.calendar = QCalendarWidget(self)

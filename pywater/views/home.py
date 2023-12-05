@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import (
     QFrame,
     QPushButton,
     QLineEdit,
+    QRadioButton,
     QFormLayout,
 )
 
@@ -80,24 +81,35 @@ class HomeView(QWidget):
     def _create_form(self):
         # add form for input height and weight
         fr = QFrame(self)
-        ly = QHBoxLayout()
+        ly = QFormLayout()
+        ly.setRowWrapPolicy(QFormLayout.RowWrapPolicy.WrapAllRows)
         fr.setLayout(ly)
         self._i_height = QLineEdit(fr)
         self._i_weight = QLineEdit(fr)
         self.btn_bmi = QPushButton("Submit", fr)
-        ly.addWidget(QLabel("Height:"))
-        ly.addWidget(self._i_height)
-        ly.addWidget(QLabel("Weight:"))
-        ly.addWidget(self._i_weight)
-        ly.addWidget(self.btn_bmi)
-        self._grid.addWidget(fr, 7, 3, 1, 3)
+        ly.addRow(QLabel("Height:"), self._i_height)
+        ly.addRow(QLabel("Weight:"), self._i_weight)
+        ly.addRow(self.btn_bmi)
+        self._grid.addWidget(fr, 3, 3, 4, 2)
 
     def _create_bmi(self):
         # add bmi status display
         fr = QFrame(self)
-        ly = QGridLayout()
+        ly = QHBoxLayout()
         fr.setLayout(ly)
-        self._grid.addWidget(fr, 3, 3, 4, 2)
+        ly.addWidget(QLabel("BMI", self))
+        ly.addStretch(2)
+        self._r_underweight = QRadioButton(self)
+        ly.addWidget(self._r_underweight)
+        ly.addStretch(1)
+        self._r_normal = QRadioButton(self)
+        self._r_normal.setChecked(True)
+        ly.addWidget(self._r_normal)
+        ly.addStretch(1)
+        self._r_overweight = QRadioButton(self)
+        ly.addWidget(self._r_overweight)
+        ly.addStretch(1)
+        self._grid.addWidget(fr, 7, 3, 1, 3)
 
     def _create_msg(self):
         # add message box

@@ -15,7 +15,7 @@ class Glass(QWidget):
     def __init__(self, parent: Union[QWidget, None] = None):
         super().__init__(parent)
         self._water = QWidget(self)
-        self._water.setStyleSheet("background-color:blue;")
+        self._water.setStyleSheet("background-color:#60a5fa;")
         self._water.setGeometry(X, Y + H, W, 0)
 
         self._anim = QPropertyAnimation(self._water, b"geometry")
