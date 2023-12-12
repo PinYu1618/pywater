@@ -1,5 +1,6 @@
 from functools import partial
 from typing import Callable
+from pathlib import Path
 
 import matplotlib
 
@@ -7,23 +8,14 @@ matplotlib.use("Qt5Agg")
 
 from .views import View
 from .models.stat import Stat
-from .models.db import DbHandler
 
 
-class Presenter:
-    def __init__(
-        self,
-        view: View,
-        stat: Stat,
-        db: DbHandler,
-        encourage: Callable,
-        bmi: Callable,
-    ) -> None:
+class PyWater:
+    def __init__(self, db, view: View, encourage: Callable, bmi: Callable) -> None:
         self._ui = view
         self._encourage = encourage
         self._bmi = bmi
-        self._stat = stat
-        self._db = db
+        self._stat = Stat(db, water=100)
         self._init_ui()
         self._connect_signals()
 

@@ -5,13 +5,11 @@ from PyQt5.QtWidgets import QMainWindow, QStatusBar
 from .views import View
 from .models.encourage import encourage
 from .models.bmi import BMI
-from .models.stat import Stat
-from .models.db import DbHandler
-from .presenter import Presenter
+from .pywater import PyWater
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
-DB = "db-dev.json"
+DB = "dev.csv"
 
 
 class App(QMainWindow):
@@ -24,7 +22,7 @@ class App(QMainWindow):
 
         # main contents
         view = View(self)
-        self.presenter = Presenter(view, Stat(water=100), DbHandler(DB), encourage, BMI)
+        self.presenter = PyWater(DB, view, encourage, BMI)
         self.setCentralWidget(view)
 
         # status bar
