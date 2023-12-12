@@ -15,7 +15,7 @@ class PyWater:
     def __init__(self, db_path: Path, view: View, encourage: Callable) -> None:
         self._ui = view
         self._encourage = encourage
-        self._stat = Stat(db_path, water=100)
+        self._stat = Stat(db_path)
         self._init_ui()
         self._connect_signals()
 
@@ -56,6 +56,7 @@ class PyWater:
             if self._ui.history.selected_date() == today:
                 self._ui.history.show_record(record)
             self._stat.save()
+            # TODO: update glass and water label
 
     def _on_water_btn(self, delta: int) -> None:
         print("Updating water...")

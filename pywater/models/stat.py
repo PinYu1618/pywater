@@ -18,9 +18,7 @@ Record = namedtuple("Record", ["water", "weight", "height"])
 
 
 class Stat(object):
-    def __init__(
-        self, db_path: Path, weight: Union[int, float] = 55, water: int = 0
-    ) -> None:
+    def __init__(self, db_path: Path) -> None:
         # init db
         self.db_path = db_path
         try:
@@ -29,9 +27,6 @@ class Stat(object):
             self.save()
         except:
             self.load()
-        self.weight = weight
-        self.water = water
-        self.height = 100
 
     @classmethod
     def water_per_day(cls, weight: float) -> int:
