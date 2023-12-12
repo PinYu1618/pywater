@@ -21,10 +21,11 @@ class PyWater:
 
     def _init_ui(self):
         record = self._stat.get_record(date.today())
-        lvl = float(self._stat.water)
-        mx = float(self._stat.water_per_day())
+        lvl = float(record.water)
+        mx = float(self._stat.water_per_day(record.weight))
         self._ui.home.glass.draw_water(lvl / mx)
         self._ui.home.print_msg(self._encourage())
+        self._ui.home.show_water_label(lvl, mx)
         self._ui.history.show_record(record)
         if not self._stat.df.empty:
             self._stat.df.plot(ax=self._ui.analysis.sc.axes)
@@ -58,11 +59,16 @@ class PyWater:
 
     def _on_water_btn(self, delta: int) -> None:
         print("Updating water...")
-        lvl = float(self._stat.water + delta)
-        if lvl >= 0.0:
-            self._stat.water += delta
-            mx = float(self._stat.water_per_day())
-            self._ui.home.glass.draw_water(lvl / mx)
+        today = date.today()
+        record = self._stat.get_record(today)
+        record = record._replace(water=max(0.0, record.water + delta))
+        self._stat.set_record(today, record)
+        mx = float(self._stat.water_per_day(record.weight))
+        self._ui.home.glass.draw_water(min(record.water / mx, 1.0))
+        self._ui.home.show_water_label(record.water, mx)
+        if self._ui.history.selected_date() == today:
+            self._ui.history.show_record(record)
+        self._stat.save()
 
     def _on_date_changed(self) -> None:
         dt = self._ui.history.selected_date()

@@ -40,8 +40,10 @@ class HomeView(QWidget):
     def weight_text(self) -> str:
         return self._i_weight.text()
 
-    def show_water_label(self, cur: int, mx: int) -> None:
-        self._lbl_water.setText(str(cur) + "/" + str(mx))
+    def show_water_label(self, cur: float, mx: float) -> None:
+        self._lbl_water.setText(
+            "Water: " + str(round(cur)) + "/" + str(round(mx)) + " (ml)"
+        )
 
     def print_msg(self, msg: str):
         """print out message to message box"""

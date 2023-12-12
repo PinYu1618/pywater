@@ -33,8 +33,9 @@ class Stat(object):
         self.water = water
         self.height = 100
 
-    def water_per_day(self) -> int:
-        return round(self.weight * ML_PER_KG)
+    @classmethod
+    def water_per_day(cls, weight: float) -> int:
+        return round(weight * ML_PER_KG)
 
     def bmi_msg(self) -> str:
         record = self.get_record(date.today())
