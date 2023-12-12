@@ -65,7 +65,13 @@ class PyWater:
             self._ui.home.glass.draw_water(lvl / mx)
 
     def _on_date_changed(self) -> None:
-        print("Fake handling date changing...")
+        dt = self._ui.history.selected_date()
+        maybe_record = self._stat.get_record(dt)
+        self._ui.history.show_date(dt)
+        if maybe_record is None:
+            self._ui.history.clear_record()
+        else:
+            self._ui.history.show_record(maybe_record)
 
     def _on_save(self) -> None:
         print("Fake Saving...")

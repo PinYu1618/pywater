@@ -100,30 +100,6 @@ class Stat(object):
         """
         self.df.to_csv(self.db_path, sep="\t", index=False)
 
-    def update_today(self, water=None, weight=None, height=None):
-        """Update today records"""
-        changed = False
-        if water is not None and water != self.water:
-            self.water = water
-            changed = True
-        if weight is not None and weight != self.weight:
-            self.weight = weight
-            changed = True
-        if height is not None and height != self.height:
-            self.height = height
-            changed = True
-
-        if changed:
-            self.update(date.today(), self.water, self.weight, self.height)
-
-    def update(self, date, water, weight, height):
-        self.df["date"] = pd.to_datetime(self.df["date"]).dt.date
-        if date not in self.df["date"].values:
-            self._add(date, Record(water, weight, height))
-        else:
-            self._modify(date, Record(water, weight, height))
-        self.save()
-
     def _add(self, date: date, record: Record):
         new_df = pd.DataFrame(
             {

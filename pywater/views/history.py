@@ -1,4 +1,5 @@
 from typing import Union
+from datetime import date
 
 from PyQt5.QtCore import Qt, QDate
 from PyQt5.QtWidgets import (
@@ -41,7 +42,7 @@ class HistoryView(QWidget):
         ly.addWidget(fr, 2, 1)
         fr.setLayout(form)
         self._lb_date = QLabel("Date: ???", fr)
-        self.show_date(today)
+        self.show_date(today.toPyDate())
         self._i_water = QLineEdit(fr)
         self._i_height = QLineEdit(fr)
         self._i_weight = QLineEdit(fr)
@@ -72,10 +73,15 @@ class HistoryView(QWidget):
         dateselected = self.calendar.selectedDate()
         return dateselected.toPyDate()
 
-    def show_date(self, date: QDate):
-        self._lb_date.setText("Date: " + date.toString())
+    def show_date(self, date: date):
+        self._lb_date.setText("Date: " + date.strftime("%y-%m-%d"))
 
     def show_record(self, record: Record):
         self._i_height.setText(str(record.height))
         self._i_weight.setText(str(record.weight))
         self._i_water.setText(str(record.water))
+
+    def clear_record(self):
+        self._i_height.setText("")
+        self._i_weight.setText("")
+        self._i_water.setText("")
