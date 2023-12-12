@@ -1,6 +1,7 @@
 from functools import partial
 from typing import Callable
 from pathlib import Path
+from datetime import date
 
 import matplotlib
 
@@ -43,6 +44,10 @@ class PyWater:
         else:
             self._stat.update_today(weight=float(txt_w), height=float(txt_h))
             self._ui.home.print_msg(self._stat.bmi_msg())
+            if self._ui.history.selected_date() == date.today():
+                self._ui.history.show_record(
+                    self._stat.weight, self._stat.height, self._stat.water
+                )
 
     def _update_water(self, delta: int) -> None:
         print("Updating water...")

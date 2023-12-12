@@ -68,7 +68,7 @@ class HistoryView(QWidget):
 
     def selected_date(self):
         dateselected = self.calendar.selectedDate()
-        dateselected.toPyDate()
+        return dateselected.toPyDate()
 
     def show_date(self, date: QDate):
         self._lb_date.setText("Date: " + date.toString())
