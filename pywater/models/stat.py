@@ -20,7 +20,7 @@ class Stat(object):
         self.db_path = Path("./db").joinpath(db)
         try:
             self.db_path.touch(exist_ok=False)
-            self.df = pd.DataFrame(columns=["date", "weight"])
+            self.df = pd.DataFrame(columns=["date", "water", "weight", "height"])
             self.save()
         except:
             self.load()
@@ -71,16 +71,25 @@ class Stat(object):
             changed = True
 
         if changed:
-            self.update(date.today(), self.weight)
+            self.update(date.today(), self.water, self.weight, self.height)
 
-    def update(self, date, weight):
+    def update(self, date, water, weight, height):
         self.df["date"] = pd.to_datetime(self.df["date"]).dt.date
         if date not in self.df["date"].values:
-            new_data = pd.DataFrame({"date": [date], "weight": [weight]})
+            new_data = pd.DataFrame(
+                {
+                    "date": [date],
+                    "water": [water],
+                    "weight": [weight],
+                    "height": [height],
+                }
+            )
             self.df = pd.concat([self.df, new_data], ignore_index=True)
         else:
             index = self.df.index[self.df["date"] == date][0]
             self.df.at[index, "weight"] = weight
+            self.df.at[index, "water"] = water
+            self.df.at[index, "height"] = height
         self.save()
 
     def save(self):

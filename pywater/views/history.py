@@ -39,7 +39,7 @@ class HistoryView(QWidget):
         ly.addWidget(fr, 2, 1)
         fr.setLayout(form)
         self._lb_date = QLabel("Date: ???", fr)
-        self._show_date(today)
+        self.show_date(today)
         self._i_water = QLineEdit(fr)
         self._i_height = QLineEdit(fr)
         self._i_weight = QLineEdit(fr)
@@ -66,18 +66,14 @@ class HistoryView(QWidget):
     def input_weight(self) -> str:
         return self._i_weight.text()
 
-    def set_water(self, water: int):
-        self._i_water.setText(str(water))
-
-    def set_height(self, height: int):
-        self._i_height.setText(str(height))
-
-    def set_weight(self, weight: int):
-        self._i_weight.setText(str(weight))
-
     def selected_date(self):
         dateselected = self.calendar.selectedDate()
         dateselected.toPyDate()
 
-    def _show_date(self, date: QDate):
+    def show_date(self, date: QDate):
         self._lb_date.setText("Date: " + date.toString())
+
+    def show_record(self, weight, height, water):
+        self._i_height.setText(str(height))
+        self._i_weight.setText(str(weight))
+        self._i_water.setText(str(water))
