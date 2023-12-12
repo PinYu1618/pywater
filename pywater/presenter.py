@@ -1,6 +1,10 @@
 from functools import partial
 from typing import Callable
 
+import matplotlib
+
+matplotlib.use("Qt5Agg")
+
 from .views import View
 from .models.stat import Stat
 from .models.db import DbHandler
@@ -28,6 +32,7 @@ class Presenter:
         mx = float(self._stat.water_per_day())
         self._ui.home.glass.update_water(lvl / mx)
         self._ui.home.print_msg(self._encourage())
+        self._stat.df.plot(ax=self._ui.analysis.sc.axes)
 
     def _connect_signals(self):
         self._ui.home.btnsub.clicked.connect(partial(self._update_water, -100))
