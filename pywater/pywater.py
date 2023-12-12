@@ -41,7 +41,7 @@ class PyWater:
         elif not _is_num(txt_w):
             self._ui.home.print_msg("Weight input error. Please enter a number")
         else:
-            self._stat.update(weight=float(txt_w), height=float(txt_h))
+            self._stat.update_today(weight=float(txt_w), height=float(txt_h))
             self._ui.home.print_msg(self._stat.bmi_msg())
 
     def _update_water(self, delta: int) -> None:

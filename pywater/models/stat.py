@@ -1,5 +1,6 @@
 from typing import Union
 from pathlib import Path
+from datetime import date
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -25,6 +26,7 @@ class Stat(object):
             self.load()
         self.weight = weight
         self.water = water
+        self.height = 100
 
     def water_per_day(self) -> int:
         return round(self.weight * ML_PER_KG)
@@ -55,14 +57,31 @@ class Stat(object):
         except (FileNotFoundError, pd.errors.EmptyDataError):
             print("Db load error")
 
-    def update(self, water=None, weight=None, height=None):
-        """Update today records (in memory)"""
-        if water is not None:
+    def update_today(self, water=None, weight=None, height=None):
+        """Update today records"""
+        changed = False
+        if water is not None and water != self.water:
             self.water = water
-        if weight is not None:
+            changed = True
+        if weight is not None and weight != self.weight:
             self.weight = weight
-        if height is not None:
+            changed = True
+        if height is not None and height != self.height:
             self.height = height
+            changed = True
+
+        if changed:
+            self.update(date.today(), self.weight)
+
+    def update(self, date, weight):
+        self.df["date"] = pd.to_datetime(self.df["date"]).dt.date
+        if date not in self.df["date"].values:
+            new_data = pd.DataFrame({"date": [date], "weight": [weight]})
+            self.df = pd.concat([self.df, new_data], ignore_index=True)
+        else:
+            index = self.df.index[self.df["date"] == date][0]
+            self.df.at[index, "weight"] = weight
+        self.save()
 
     def save(self):
         self.df.to_csv(self.db_path, sep="\t", index=False)
