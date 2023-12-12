@@ -31,7 +31,7 @@ class HistoryView(QWidget):
         self.calendar.setMouseTracking(True)
         self.calendar.setCursor(Qt.PointingHandCursor)
         self.calendar.setSelectedDate(today)
-        ly.addWidget(self.calendar, 2, 0)
+        ly.addWidget(self.calendar, 2, 0, 2, 1)
 
         # data
         fr = QFrame(self)
@@ -52,6 +52,10 @@ class HistoryView(QWidget):
         # save button
         self.btn_save = QPushButton("Save", self)
         ly.addWidget(self.btn_save, 3, 1)
+
+        # status
+        self.lbl_status = QLabel("", self)
+        ly.addWidget(self.lbl_status, 4, 0)
 
     def input_water(self) -> str:
         return self._i_water.text()
