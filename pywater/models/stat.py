@@ -53,13 +53,13 @@ class Stat(object):
     def load(self):
         try:
             self.df = pd.read_csv(self.db_path, sep="\t", parse_dates=["date"])
-            self.df["date"] = pd.to_datetime(self.df["date"])
+            self.df["date"] = pd.to_datetime(self.df["date"], yearfirst=True).dt.date
             today = date.today()
             if today not in self.df["date"].values:
                 self.add(today, 100, 60, 165)
                 self.save()
             else:
-                index = self.df.index[self.df["date"] == date][0]
+                index = self.df.index[self.df["date"] == today][0]
                 self.weight = self.df.at[index, "weight"]
                 self.water = self.df.at[index, "water"]
                 self.height = self.df.at[index, "height"]
