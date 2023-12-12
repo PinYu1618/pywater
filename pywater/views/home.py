@@ -28,7 +28,7 @@ class HomeView(QWidget):
         self.setLayout(self._grid)
         self.setStyleSheet("QFrame{border: 2px solid black;}")
         self._create_glass()
-        self._create_fire()
+        self._create_water()
         self._create_form()
         self._create_volume()
         self._create_bmi()
@@ -39,6 +39,9 @@ class HomeView(QWidget):
 
     def weight_text(self) -> str:
         return self._i_weight.text()
+
+    def show_water_label(self, cur: int, mx: int) -> None:
+        self._lbl_water.setText(str(cur) + "/" + str(mx))
 
     def print_msg(self, msg: str):
         """print out message to message box"""
@@ -67,10 +70,10 @@ class HomeView(QWidget):
 
         self._grid.addWidget(fr, 1, 0, 7, 3)
 
-    def _create_fire(self):
-        fire = QLabel("(fire icon) 30 days")
-        fire.setStyleSheet("border: 2px solid black;")
-        self._grid.addWidget(fire, 1, 3, 2, 2)
+    def _create_water(self):
+        self._lbl_water = QLabel("Water: ?/?")
+        self._lbl_water.setStyleSheet("border: 2px solid black;")
+        self._grid.addWidget(self._lbl_water, 1, 3, 2, 2)
 
     def _create_volume(self):
         # add volume control box

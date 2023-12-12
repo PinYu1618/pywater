@@ -20,13 +20,12 @@ class PyWater:
         self._connect_signals()
 
     def _init_ui(self):
+        record = self._stat.get_record(date.today())
         lvl = float(self._stat.water)
         mx = float(self._stat.water_per_day())
         self._ui.home.glass.draw_water(lvl / mx)
         self._ui.home.print_msg(self._encourage())
-        self._ui.history.show_record(
-            self._stat.weight, self._stat.height, self._stat.water
-        )
+        self._ui.history.show_record(record)
         if not self._stat.df.empty:
             self._stat.df.plot(ax=self._ui.analysis.sc.axes)
 
@@ -47,12 +46,15 @@ class PyWater:
         elif not _is_num(txt_w):
             self._ui.home.print_msg("Weight input error. Please enter a number")
         else:
-            self._stat.update_today(weight=float(txt_w), height=float(txt_h))
+            today = date.today()
+            record = self._stat.get_record(today)
+            record = record._replace(weight=float(txt_w))
+            record = record._replace(height=float(txt_h))
+            self._stat.set_record(today, record)
             self._ui.home.print_msg(self._stat.bmi_msg())
-            if self._ui.history.selected_date() == date.today():
-                self._ui.history.show_record(
-                    self._stat.weight, self._stat.height, self._stat.water
-                )
+            if self._ui.history.selected_date() == today:
+                self._ui.history.show_record(record)
+            self._stat.save()
 
     def _on_water_btn(self, delta: int) -> None:
         print("Updating water...")

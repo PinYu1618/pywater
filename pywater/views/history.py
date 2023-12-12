@@ -12,6 +12,8 @@ from PyQt5.QtWidgets import (
     QLineEdit,
 )
 
+from ..models.stat import Record
+
 
 class HistoryView(QWidget):
     def __init__(self, parent: Union[QWidget, None] = None) -> None:
@@ -73,7 +75,7 @@ class HistoryView(QWidget):
     def show_date(self, date: QDate):
         self._lb_date.setText("Date: " + date.toString())
 
-    def show_record(self, weight, height, water):
-        self._i_height.setText(str(height))
-        self._i_weight.setText(str(weight))
-        self._i_water.setText(str(water))
+    def show_record(self, record: Record):
+        self._i_height.setText(str(record.height))
+        self._i_weight.setText(str(record.weight))
+        self._i_water.setText(str(record.water))
