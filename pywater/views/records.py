@@ -99,7 +99,7 @@ class WeightRecordApp(QWidget):
             self.loaded_data["日期"] = pd.to_datetime(self.loaded_data["日期"]).dt.date
 
             if date not in self.loaded_data["日期"].values:
-                new_data = pd.DataFrame({"日期": [date], "體重": [weight]})
+                new_data = pd.DataFrame({"date": [date], "weight": [weight]})
                 self.loaded_data = pd.concat(
                     [self.loaded_data, new_data], ignore_index=True
                 )

@@ -75,9 +75,9 @@ class HistoryView(QWidget):
     def set_weight(self, weight: int):
         self._i_weight.setText(str(weight))
 
-    def selected_date(self) -> str:
+    def selected_date(self):
         dateselected = self.calendar.selectedDate()
-        return str(dateselected.toPyDate())
+        dateselected.toPyDate()
 
     def _show_date(self, date: QDate):
         self._lb_date.setText("Date: " + date.toString())

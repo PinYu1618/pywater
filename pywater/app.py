@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import QMainWindow, QStatusBar
 
 from .views import View
 from .models.encourage import encourage
-from .models.bmi import BMI
 from .pywater import PyWater
 
 WINDOW_WIDTH = 1280
@@ -22,7 +21,7 @@ class App(QMainWindow):
 
         # main contents
         view = View(self)
-        self.presenter = PyWater(DB, view, encourage, BMI)
+        self.presenter = PyWater(DB, view, encourage)
         self.setCentralWidget(view)
 
         # status bar

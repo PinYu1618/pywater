@@ -23,7 +23,7 @@ class Glass(QWidget):
         self._anim.setEndValue(QRect(X, Y + H - 200, W, 200))
         self._anim.setDuration(DURATION)
 
-    def update_water(self, pc: float):
+    def draw_water(self, pc: float):
         self._anim.stop()
         if pc >= 0.0:
             if pc >= 1.0:
