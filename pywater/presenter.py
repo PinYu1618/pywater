@@ -32,7 +32,8 @@ class Presenter:
         mx = float(self._stat.water_per_day())
         self._ui.home.glass.update_water(lvl / mx)
         self._ui.home.print_msg(self._encourage())
-        self._stat.df.plot(ax=self._ui.analysis.sc.axes)
+        if not self._stat.df.empty:
+            self._stat.df.plot(ax=self._ui.analysis.sc.axes)
 
     def _connect_signals(self):
         self._ui.home.btnsub.clicked.connect(partial(self._update_water, -100))
