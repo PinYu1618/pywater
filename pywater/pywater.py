@@ -8,7 +8,7 @@ import matplotlib
 matplotlib.use("Qt5Agg")
 
 from .views import View
-from .models.stat import Stat
+from .models.stat import Stat, Record
 
 
 class PyWater:
@@ -74,7 +74,21 @@ class PyWater:
             self._ui.history.show_record(maybe_record)
 
     def _on_save(self) -> None:
-        print("Fake Saving...")
+        h_txt = self._ui.history.input_height()
+        w_txt = self._ui.history.input_weight()
+        wat_txt = self._ui.history.input_water()
+        if not _is_num(h_txt):
+            self._ui.history.show_status("Height input error. Please enter a number")
+        elif not _is_num(w_txt):
+            self._ui.history.show_status("Weight input error. Please enter a number")
+        elif not _is_num(wat_txt):
+            self._ui.history.show_status("Water input error. Please enter a number")
+        else:
+            record = Record(float(wat_txt), float(w_txt), float(h_txt))
+            dt = self._ui.history.selected_date()
+            self._stat.set_record(dt, record)
+            self._stat.save()
+            self._ui.history.show_status("Record updated!")
 
 
 def _is_num(v) -> bool:

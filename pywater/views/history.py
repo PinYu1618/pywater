@@ -81,6 +81,9 @@ class HistoryView(QWidget):
         self._i_weight.setText(str(record.weight))
         self._i_water.setText(str(record.water))
 
+    def show_status(self, msg: str):
+        self.lbl_status.setText(msg)
+
     def clear_record(self):
         self._i_height.setText("")
         self._i_weight.setText("")
