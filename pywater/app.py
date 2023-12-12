@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QSize
 from PyQt5.QtWidgets import QMainWindow, QStatusBar
@@ -21,7 +23,8 @@ class App(QMainWindow):
 
         # main contents
         view = View(self)
-        self.presenter = PyWater(DB, view, encourage)
+        db_path = Path("./db").joinpath(DB)
+        self.presenter = PyWater(db_path, view, encourage)
         self.setCentralWidget(view)
 
         # status bar

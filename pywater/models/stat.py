@@ -15,9 +15,11 @@ UNDERWEIGHT = -1
 
 
 class Stat(object):
-    def __init__(self, db, weight: Union[int, float] = 55, water: int = 0) -> None:
+    def __init__(
+        self, db_path: Path, weight: Union[int, float] = 55, water: int = 0
+    ) -> None:
         # init db
-        self.db_path = Path("./db").joinpath(db)
+        self.db_path = db_path
         try:
             self.db_path.touch(exist_ok=False)
             self.df = pd.DataFrame(columns=["date", "water", "weight", "height"])
