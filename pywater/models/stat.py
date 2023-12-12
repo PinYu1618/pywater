@@ -54,6 +54,16 @@ class Stat(object):
         try:
             self.df = pd.read_csv(self.db_path, sep="\t", parse_dates=["date"])
             self.df["date"] = pd.to_datetime(self.df["date"])
+            today = date.today()
+            if today not in self.df["date"].values:
+                self.add(today, 100, 60, 165)
+                self.save()
+            else:
+                index = self.df.index[self.df["date"] == date][0]
+                self.weight = self.df.at[index, "weight"]
+                self.water = self.df.at[index, "water"]
+                self.height = self.df.at[index, "height"]
+
         except (FileNotFoundError, pd.errors.EmptyDataError):
             print("Db load error")
 
@@ -76,21 +86,24 @@ class Stat(object):
     def update(self, date, water, weight, height):
         self.df["date"] = pd.to_datetime(self.df["date"]).dt.date
         if date not in self.df["date"].values:
-            new_data = pd.DataFrame(
-                {
-                    "date": [date],
-                    "water": [water],
-                    "weight": [weight],
-                    "height": [height],
-                }
-            )
-            self.df = pd.concat([self.df, new_data], ignore_index=True)
+            self.add(date, water, weight, height)
         else:
             index = self.df.index[self.df["date"] == date][0]
             self.df.at[index, "weight"] = weight
             self.df.at[index, "water"] = water
             self.df.at[index, "height"] = height
         self.save()
+
+    def add(self, date, water, weight, height):
+        new_data = pd.DataFrame(
+            {
+                "date": [date],
+                "water": [water],
+                "weight": [weight],
+                "height": [height],
+            }
+        )
+        self.df = pd.concat([self.df, new_data], ignore_index=True)
 
     def save(self):
         self.df.to_csv(self.db_path, sep="\t", index=False)
