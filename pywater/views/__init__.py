@@ -11,6 +11,7 @@ from .analysis import AnalysisView
 class View(QTabWidget):
     def __init__(self, parent: Union[QWidget, None] = None) -> None:
         super().__init__(parent)
+        self.setStyleSheet("font-size: 20px;")
         self.home = HomeView(self)
         self.addTab(self.home, "Home")
         self.history = HistoryView(self)

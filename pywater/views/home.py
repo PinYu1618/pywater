@@ -16,6 +16,11 @@ from PyQt5.QtWidgets import (
 from .widgets.volume import VolumeCtrl
 from .widgets.glass import Glass
 
+# styles
+BOX = "border: 2px solid black;"
+MSG_LBL = "font-size: 24px; padding: 4px;" + BOX
+WATER_LBL = "text-align: center; font-size: 20px; padding: 6px;" + BOX
+
 
 class HomeView(QWidget):
     """
@@ -74,7 +79,7 @@ class HomeView(QWidget):
 
     def _create_water(self):
         self._lbl_water = QLabel("Water: ?/?")
-        self._lbl_water.setStyleSheet("border: 2px solid black;")
+        self._lbl_water.setStyleSheet(WATER_LBL)
         self._grid.addWidget(self._lbl_water, 1, 3, 2, 2)
 
     def _create_volume(self):
@@ -119,5 +124,5 @@ class HomeView(QWidget):
     def _create_msg(self):
         # add message box
         self._msg = QLabel()
-        self._msg.setStyleSheet("border: 2px solid black;")
+        self._msg.setStyleSheet(MSG_LBL)
         self._grid.addWidget(self._msg, 8, 0, 1, 6)
