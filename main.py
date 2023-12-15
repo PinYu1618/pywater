@@ -1,6 +1,6 @@
 from pywater import app, notify
 
-NOTIFY = False
+NOTIFY = True
 
 
 def main():
