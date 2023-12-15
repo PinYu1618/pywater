@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 # water needed per day per kg
 ML_PER_KG = 35.0
 
-# bmi status
+# bmi status (these are not used)
 OBESE = 1
 NORMAL = 0
 UNDERWEIGHT = -1
@@ -54,7 +54,7 @@ class Stat(object):
 
     def load(self):
         """
-        Load data from disk
+        Load data from database
         """
         try:
             self.df = pd.read_csv(self.db_path, sep="\t", parse_dates=["date"])
@@ -82,7 +82,7 @@ class Stat(object):
 
     def set_record(self, date: date, record: Record) -> None:
         """
-        Update (in memory) data
+        Update data (but not saved to db)
         """
         self.df["date"] = pd.to_datetime(self.df["date"]).dt.date
         if date not in self.df["date"].values:
@@ -92,7 +92,7 @@ class Stat(object):
 
     def save(self):
         """
-        Save data to disk
+        Save data
         """
         self.df.to_csv(self.db_path, sep="\t", index=False)
 

@@ -32,7 +32,7 @@ class HistoryView(QWidget):
         today = QDate().currentDate()
         self.calendar = QCalendarWidget(self)
         self.calendar.setMouseTracking(True)
-        self.calendar.setCursor(Qt.PointingHandCursor)
+        self.calendar.setCursor(Qt.PointingHandCursor)  # type: ignore
         self.calendar.setSelectedDate(today)
         ly.addWidget(self.calendar, 2, 0, 2, 1)
 

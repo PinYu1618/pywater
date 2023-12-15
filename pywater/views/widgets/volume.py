@@ -31,7 +31,7 @@ class VolumeCtrl(QFrame):
         self._dial = QDial(self)
         self._dial.setFixedSize(QSize(150, 150))
         self._dial.setMouseTracking(True)
-        self._dial.setCursor(Qt.PointingHandCursor)
+        self._dial.setCursor(Qt.PointingHandCursor)  # type: ignore
         self._dial.valueChanged.connect(self._bar._trigger_refresh)
         layout.addWidget(self._dial)
 
@@ -46,7 +46,7 @@ class _Bar(QWidget):
         painter = QPainter(self)
         brush = QBrush()
         brush.setColor(QColor("black"))
-        brush.setStyle(Qt.SolidPattern)
+        brush.setStyle(Qt.SolidPattern)  # type: ignore
         rect = QRect(0, 0, self.width(), self.height())
         painter.fillRect(rect, brush)
 
