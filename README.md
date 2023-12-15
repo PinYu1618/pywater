@@ -1,5 +1,33 @@
 ## pywater
 
+### How to run it
+
+1. First clone this repo, and navigate into the folder,
+   ```
+   $ git clone https://github.com/PinYu1618/pywater.git
+   $ cd pywater
+   ```
+2. Create virtual environment,
+   **Linux:**
+   ```
+   $ python3 -m venv ./venv
+   $ source venv/bin/activate
+   (venv) $
+   ```
+   **Windows:**
+   ```
+   python -m venv venv
+   venv\Scripts\activate
+   ```
+3. Install dependencies,
+   ```
+   (venv) $ pip install -r requirements.txt
+   ```
+4. Run it.
+   ```
+   (venv) $ python main.py
+   ```
+
 ### Folder Structure
 
 ```
