@@ -25,12 +25,12 @@ class Glass(QWidget):
 
     def draw_water(self, pc: float):
         self._anim.stop()
-        if pc >= 0.0:
-            if pc >= 1.0:
-                pc = 1.0
-            lvl = round(float(H) * pc)
-            self._anim.setEndValue(QRect(X, Y + H - lvl, W, lvl))
-            self._anim.start()
+        # clamp pc to 0~1
+        pc = max(0.0, pc)
+        pc = min(1.0, pc)
+        lvl = round(float(H) * pc)
+        self._anim.setEndValue(QRect(X, Y + H - lvl, W, lvl))
+        self._anim.start()
 
     def paintEvent(self, event: QPaintEvent):
         painter = QPainter(self)
