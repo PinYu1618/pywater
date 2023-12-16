@@ -9,7 +9,7 @@ TITLE = "Time to drink water!"
 def setup():
     # setup notification background scheduler
     sched = BackgroundScheduler(timezone="Asia/Taipei")
-    sched.add_job(_notify, "interval", seconds=5)  # change this to hour in dist
+    sched.add_job(_notify, "interval", seconds=10)  # change this to hour in dist
     sched.start()
     print("Schedule started...")
 
