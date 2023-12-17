@@ -45,6 +45,12 @@ class HomeView(QWidget):
     def weight_text(self) -> str:
         return self._i_weight.text()
 
+    def set_height(self, h: float):
+        self._i_height.setText(str(h))
+
+    def set_weight(self, w: float):
+        self._i_weight.setText(str(w))
+
     def show_water_label(self, cur: float, mx: float) -> None:
         self._lbl_water.setText(
             "Water: " + str(round(cur)) + "/" + str(round(mx)) + " (ml)"
