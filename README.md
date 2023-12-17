@@ -51,7 +51,7 @@ To set the interval of notifications (in seconds), for example 3 secs
 To disable the notification
 
 ```
-(venv) $ python main.py --notify 0    (or -n 0)
+(venv) $ python main.py -notify 0    (or -n 0)
 ```
 
 ### Folder Structure
