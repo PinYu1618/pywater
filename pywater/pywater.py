@@ -101,6 +101,7 @@ class PyWater:
             # update ui
             self._ui.history.show_status("Record updated!")
             self._redraw_water(record)
+            self._ui.home.print_msg(self._stat.bmi_msg(record))
             # update model
             dt = self._ui.history.selected_date()
             self._stat.set_record(dt, record)

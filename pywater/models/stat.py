@@ -115,4 +115,11 @@ class Stat(object):
         self.df.at[index, "height"] = record.height
 
     def _add_today(self):
-        self._add(date.today(), Record(0, 60.0, 165.0))
+        length = len(self.df.index)
+        if length == 0:
+            self._add(date.today(), Record(0, 60.0, 165.0))  # default record
+        else:
+            record = Record(
+                0, self.df.at[length - 1, "weight"], self.df.at[length - 1, "height"]
+            )
+            self.set_record(date.today(), record)
