@@ -22,11 +22,8 @@ class PyWater:
     def _init_ui(self):
         record = self._stat.get_record(date.today())
         if record is not None:
-            lvl = float(record.water)
-            mx = float(self._stat.water_per_day(record.weight))
-            self._ui.home.glass.draw_water(lvl / mx)
+            self._redraw_water(record)
             self._ui.home.print_msg(self._encourage())
-            self._ui.home.show_water_label(lvl, mx)
             self._ui.history.show_record(record)
         else:
             self._on_no_today()
@@ -55,14 +52,14 @@ class PyWater:
             if record is not None:
                 record = record._replace(weight=float(txt_w))
                 record = record._replace(height=float(txt_h))
-                self._stat.set_record(today, record)
+                # update ui
                 self._ui.home.print_msg(self._stat.bmi_msg())
+                self._redraw_water(record)
                 if self._ui.history.selected_date() == today:
                     self._ui.history.show_record(record)
+                # update model
+                self._stat.set_record(today, record)
                 self._stat.save()
-                mx = float(self._stat.water_per_day(record.weight))
-                self._ui.home.show_water_label(record.water, mx)
-                self._ui.home.glass.draw_water(min(record.water / mx, 1.0))
             else:
                 self._on_no_today()
 
@@ -71,17 +68,18 @@ class PyWater:
         record = self._stat.get_record(today)
         if record is not None:
             record = record._replace(water=max(0.0, record.water + delta))
-            self._stat.set_record(today, record)
-            mx = float(self._stat.water_per_day(record.weight))
-            self._ui.home.glass.draw_water(min(record.water / mx, 1.0))
-            self._ui.home.show_water_label(record.water, mx)
+            # update ui
+            self._redraw_water(record)
             if self._ui.history.selected_date() == today:
                 self._ui.history.show_record(record)
+            # update model
+            self._stat.set_record(today, record)
             self._stat.save()
 
     def _on_date_changed(self) -> None:
         dt = self._ui.history.selected_date()
         maybe_record = self._stat.get_record(dt)
+        # update ui
         self._ui.history.show_date(dt)
         if maybe_record is None:
             self._ui.history.clear_record()
@@ -100,13 +98,21 @@ class PyWater:
             self._ui.history.show_status("Water input error. Please enter a number")
         else:
             record = Record(float(wat_txt), float(w_txt), float(h_txt))
+            # update ui
+            self._ui.history.show_status("Record updated!")
+            self._redraw_water(record)
+            # update model
             dt = self._ui.history.selected_date()
             self._stat.set_record(dt, record)
             self._stat.save()
-            self._ui.history.show_status("Record updated!")
 
     def _on_no_today(self):
         print("No today record!")
+
+    def _redraw_water(self, record: Record):
+        mx = float(self._stat.water_per_day(record.weight))
+        self._ui.home.show_water_label(record.water, mx)
+        self._ui.home.glass.draw_water(min(record.water / mx, 1.0))
 
 
 def _is_num(v) -> bool:
