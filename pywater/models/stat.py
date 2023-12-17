@@ -24,8 +24,9 @@ class Stat(object):
         try:
             self.db_path.touch(exist_ok=False)
             self.df = pd.DataFrame(columns=["date", "water", "weight", "height"])
+            self._add_today()
             self.save()
-        except:
+        except:  # file exitsts
             self.load()
 
     @classmethod
@@ -34,6 +35,8 @@ class Stat(object):
 
     def bmi_msg(self) -> str:
         record = self.get_record(date.today())
+        if record is None:
+            return "No today record found!"
         # 計算BMI
         bmi = round(float(record.weight) / (float(record.height) / 100.0) ** 2, 2)
         # 判斷BMI
@@ -61,7 +64,7 @@ class Stat(object):
             self.df["date"] = pd.to_datetime(self.df["date"], yearfirst=True).dt.date
             today = date.today()
             if today not in self.df["date"].values:
-                self._add(today, Record(0, 60.0, 165.0))
+                self._add_today()
                 self.save()
         except (FileNotFoundError, pd.errors.EmptyDataError):
             print("Db load error")
@@ -112,3 +115,6 @@ class Stat(object):
         self.df.at[index, "weight"] = record.weight
         self.df.at[index, "water"] = record.water
         self.df.at[index, "height"] = record.height
+
+    def _add_today(self):
+        self._add(date.today(), Record(0, 60.0, 165.0))

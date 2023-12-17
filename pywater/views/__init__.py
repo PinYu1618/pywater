@@ -5,7 +5,8 @@ from PyQt5.QtWidgets import QTabWidget
 
 from .home import HomeView
 from .history import HistoryView
-from .analysis import AnalysisView
+
+# from .analysis import AnalysisView
 
 
 class View(QTabWidget):
@@ -16,5 +17,7 @@ class View(QTabWidget):
         self.addTab(self.home, "Home")
         self.history = HistoryView(self)
         self.addTab(self.history, "History")
-        self.analysis = AnalysisView(self)
-        self.addTab(self.analysis, "Analysis")
+
+
+#       self.analysis = AnalysisView(self)
+#      self.addTab(self.analysis, "Analysis")
