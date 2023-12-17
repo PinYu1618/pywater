@@ -36,9 +36,23 @@ venv\Scripts\activate
 (venv) $ python main.py
 ```
 
-*Important Note:*
+*Important Note 1:*
 
-After you **close** the app window, the process will **not** be terminated, because the background scheduler is still running. You can stop the it by pressing `Ctrl+C` or close the terminal. (It is because the window runs as a child process of notifier.)
+After you **close** the app window, the process will **not** be terminated, because the background scheduler is still running. You can stop the it by typing `Ctrl+C` in your terminal or close the terminal. (It is because the window runs as a child process of notifier.)
+
+*Important Note 2:*
+
+To set the interval of notifications (in seconds), for example 3 secs
+
+```
+(venv) $ python main.py -interval 3  (or -i 3)
+```
+
+To disable the notification
+
+```
+(venv) $ python main.py --notify 0    (or -n 0)
+```
 
 ### Folder Structure
 
