@@ -53,7 +53,7 @@ class PyWater:
                 record = record._replace(weight=float(txt_w))
                 record = record._replace(height=float(txt_h))
                 # update ui
-                self._ui.home.print_msg(self._stat.bmi_msg())
+                self._ui.home.print_msg(self._stat.bmi_msg(record))
                 self._redraw_water(record)
                 if self._ui.history.selected_date() == today:
                     self._ui.history.show_record(record)

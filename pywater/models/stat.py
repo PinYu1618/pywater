@@ -33,10 +33,8 @@ class Stat(object):
     def water_per_day(cls, weight: float) -> int:
         return round(weight * ML_PER_KG)
 
-    def bmi_msg(self) -> str:
-        record = self.get_record(date.today())
-        if record is None:
-            return "No today record found!"
+    @classmethod
+    def bmi_msg(cls, record: Record) -> str:
         # 計算BMI
         bmi = round(float(record.weight) / (float(record.height) / 100.0) ** 2, 2)
         # 判斷BMI
