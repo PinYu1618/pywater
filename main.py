@@ -1,18 +1,20 @@
 import time
+import multiprocessing as mp
+
 from pywater import app, notify
 
-NOTIFY = False
+NOTIFY = True
 
 
 def main():
-    # TODO: change this to fork
+    p = mp.Process(target=app.run)
+    p.start()
+
     if NOTIFY:
         notify.setup()
         while True:
             time.sleep(10)  # 暫停10秒鐘
             print("程式執行中.....")
-    else:
-        app.run()
 
 
 if __name__ == "__main__":

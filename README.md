@@ -14,41 +14,31 @@ Health management app with python pyqt5.
 
 ### How to run it
 
-First clone the project, and navigate into the folder,
-
 ```
 $ git clone https://github.com/PinYu1618/pywater.git
 $ cd pywater
-```
 
-Then create virtual environment,
+# Then create virtual environment
 
-**Linux:**
-
-```
+# For linux:
 $ python3 -m venv ./venv
 $ source venv/bin/activate
-(venv) $
-```
 
-**Windows:**
-
-```
+# For windows:
 python -m venv venv
 venv\Scripts\activate
-```
 
-Install dependencies,
+# Install dependencies
 
-```
 (venv) $ pip install -r requirements.txt
-```
 
-Run it.
-
-```
+# Run it.
 (venv) $ python main.py
 ```
+
+*Important Note:*
+
+After you **close** the app window, the process will **not** be terminated, because the background scheduler is still running. You can stop the it by pressing `Ctrl+C` or close the terminal. (It is because the window runs as a child process of notifier.)
 
 ### Folder Structure
 
